@@ -1,0 +1,50 @@
+Library
+express, sequelise, jwt, bcrypt, multer, nodemailer
+
+TOKEN AUTH EXP is 2 days
+TOKEN AUTH CHANGE PASSWORD VALIDATION EXP 15 minutes
+
+FEATURE
+Message => {
+    send : userId
+}
+
+SECURITY
+XSS (Cross Site Scriptint) = Helmet Library
+DATABASE_INJECTION = ORM / Sanitation
+
+#DATABASE
+MYSQL
+
+Tables
+user = id, username, email, password, country, about, status, createAt, updateAt 
+collection = id, userId, collected_by_userId, createAt, updateAt
+likes = id, userId, liked_by_userId, createAt, updateAt
+image = id, userId, title, description, createAt, updateAt
+notification = id, userid, message
+
+MONGODB
+
+Collections
+user = userId
+{
+    'userid' : ''
+}
+
+message =  
+{
+    'userId' : '',
+    'message' : ''
+}
+
+room = 
+{
+    participant : ['1', '2'],
+    type : 'group'
+}
+
+collection = createOne, deleteOne, getMany,
+like = createOne, deleteOne, getMany,
+image = createOne, deleteOne, getOne, getMany, 
+message = createRoomOne, createMessageMany, getMesssageMany
+notification = createOne, createMany, getMany
