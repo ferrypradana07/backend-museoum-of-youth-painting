@@ -5,6 +5,7 @@ TOKEN AUTH EXP is 2 days
 TOKEN AUTH CHANGE PASSWORD VALIDATION EXP 15 minutes
 
 FEATURE
+
 Message => {
     send : userId
 }
@@ -12,6 +13,8 @@ Message => {
 SECURITY
 XSS (Cross Site Scriptint) = Helmet Library
 DATABASE_INJECTION = ORM / Sanitation
+JWT = AUTH
+BCRYPT = SECURE Data Private
 
 #DATABASE
 MYSQL
@@ -21,7 +24,9 @@ user = id, username, email, password, country, about, status, createAt, updateAt
 collection = id, userId, collected_by_userId, createAt, updateAt
 likes = id, userId, liked_by_userId, createAt, updateAt
 image = id, userId, title, description, createAt, updateAt
-notification = id, userid, message
+
+notification = id, userid, message, createAt, updateAt
+follower = id, followed_by_userId, following_userId, createAt, updateAt
 
 MONGODB
 

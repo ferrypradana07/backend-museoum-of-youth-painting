@@ -68,7 +68,7 @@ Response
     'user' : {
         'id' : <id>,
         'username' : <username>,
-        'email' : <email>
+        'photo_profile' : <photo_profile>
     }
 }
 ```
@@ -77,7 +77,7 @@ Response
 
 Method : 'GET'
 URL : api/user?userId=<userId>
-
+Decription : 'Get user data with return data ,3 images latest, and 3 collection latest '
 Header
 ```
 {
@@ -89,15 +89,31 @@ Response
 ```
 {
     'page' : <page>
-    'users' : {
+    'user' : {
         'id' : <id>,
         'username' : <username>,
         'photo_profile' : https://cdn.site/src/763ydahwhdamjhhHgsj
-    },
-    {
-        'id' : <id>,
-        'username' : <username>,
-        'photo_profile' : https://cdn.site/src/763ydahwhdamjhhHheth
+        'like' : <like>,
+        'images' : [
+                {
+                    'url' : <url>,
+                    'id' : <id>
+                },
+                {
+                    'url' : <url>,
+                    'id' : <id>
+                }
+            ],
+        'collectiones' : [
+                {
+                    'url' : <url>,
+                    'id' : <id>
+                },
+                {
+                    'url' : <url>,
+                    'id' : <id>
+                }
+            ],
     }
 }
 ```
@@ -107,27 +123,33 @@ Response
 Method : 'GET'
 URL : api/users
 
-Header
+Headers
 ```
 {
     'Content-Type' : 'application/json'
 }
 ```
 
+Request Query
+```
+Example : api/user
+```
 Response 
 ```
 {
     'page' : <page>
-    'users' : {
-        'id' : <id>,
-        'username' : <username>,
-        'photo_profile' : https://cdn.site/src/763ydahwhdamjhhHgsj
-    },
-    {
-        'id' : <id>,
-        'username' : <username>,
-        'photo_profile' : https://cdn.site/src/763ydahwhdamjhhHheth
-    }
+    'users' : [
+        {
+            'id' : <id>,
+            'username' : <username>,
+            'photo_profile' : https://cdn.site/src/763ydahwhdamjhhHgsj
+        },
+        {
+            'id' : <id>,
+            'username' : <username>,
+            'photo_profile' : https://cdn.site/src/763ydahwhdamjhhHheth
+        }
+    ]
 }
 ```
 
@@ -189,6 +211,20 @@ Response
 }
 ```
 
+Response Error 
+```
+{
+    'error' : {
+        'message' : 'user password updated succesfully',
+        validator : {
+            symbol : false,
+            number : false,
+            length : true,
+        }
+        }
+}
+```
+
 8. UPDATE Photo Profile
 
 Method : 'PUT'
@@ -216,50 +252,250 @@ Response
 }
 ```
 
-============= MESSAGE =============
+============= COLLECTION =============
 
 
-1. UPDATE Photo Profile
+1. createCollection 
+Method : 'POST'
+URL : api/collection
 
-Method : 'PUT' 
-URL : api/user/photo-profile
-Description : Update photo-profile with use JsonWebToken
-Header
-```
+HEADERS
+
 {
-    'Authorization' : Bearer <JsonWebToken>,
+    "Authorization" : Bearer <token>,
     'Content-Type' : 'application/json'
 }
-```
 
-Request Body
-
+Request Body 
 ```
-photo_profile_image
+{
+    'imageId' : <imageId>,
+}
 ```
 
 Response 
 ```
 {
-    'message' : 'user photo profile updated succesfully'
+    'message' : 'success'
 }
 ```
-Error Response 
+
+2. deleteCollection 
+Method : 'DELETE'
+URL : api/collection
+
+HEADERS
+
+{
+    "Authorization" : Bearer <token>,
+    'Content-Type' : 'application/json'
+}
+
+Request Body 
 ```
 {
-    'error' : {
-        'message' : 'invalid credential'
+    'imageId' : <imageId>,
+}
+```
+
+Response 
+```
+{
+    'message' : 'success'
+}
+```
+
+3. getCollections 
+Method : 'GET'
+URL : api/collections
+
+HEADERS
+
+{
+    'Content-Type' : 'application/json'
+}
+
+Request Query 
+
+Example : api/collections/<userId>
+
+Response 
+```
+{
+    'collections' : [
+        {
+            'imageId' : <imageId>
+            'url' : <url>,
+        },
+        {
+            'imageId' : <imageId>
+            'url' : <url>,
+        }
+    ]
+}
+```
+
+================ LIKE ================
+
+1. createLike 
+Method : 'PUT'
+URL : api/like
+
+HEADERS
+
+{
+    "Authorization" : Bearer <token>,
+    'Content-Type' : 'application/json'
+}
+
+Request Body 
+```
+{
+    'userId' : <userId>,
+}
+```
+
+Response 
+```
+{
+    'message' : 'success'
+}
+```
+
+2. deleteLike 
+Method : 'DELETE'
+URL : api/like
+
+HEADERS
+
+{
+    "Authorization" : Bearer <token>,
+    'Content-Type' : 'application/json'
+}
+
+Request Body 
+```
+{
+    'imageId' : <imageId>
+}
+```
+
+Response 
+```
+{
+    'message' : 'success'
+}
+```
+
+================ IMAGE ===============
+
+1. uploadImage 
+Method : 'POST'
+URL : api/image/upload
+HEADERS
+
+{
+    "Authorization" : Bearer <token>,
+    'Content-Type' : 'multipart/form-data'
+    'Content-Type' : 'application/json'
+}
+
+Request Body 
+```
+{
+    'title' : <title>,
+    'description' : <description>
+}
+form['image']
+```
+
+Response 
+```
+{
+    'message' : 'success'
+}
+```
+
+2. deleteImage 
+Method : 'DELETE'
+URL :
+HEADERS
+
+{
+    "Authorization" : Bearer <token>,
+    'Content-Type' : 'application/json'
+}
+
+Request Query 
+```
+Example : api/image/:userId/:imageId
+```
+
+Response 
+```
+{
+    'message' : 'success'
+}
+```
+
+3. getImages
+Method : 'GET'
+URL : api/image?limit=<limit>&offset=<offset>
+
+HEADERS
+{
+    'Content-Type' : 'application/json'
+}
+
+Request Query 
+```
+Example : api/api/image?limit=5&offset=15
+```
+
+Response 
+```
+{
+    'images' : {
+        'imageId' : <imageid>,
+        'url' : <url>,
+    },
+    {
+        'imageId' : <imageid>,
+        'url' : <url>,
     }
 }
 ```
 
-============= COLLECTION =============
-================ LIKE ================
-============== PAINTING ==============
+4. getImageData
+Method : 'GET'
+URL : api/image/<imageId>
+Description : 'get image data header auth to get data liked and collectioned'
+
+HEADERS
+{
+    'Authorization' : 'Bearer <token>' <--- OPTIONAL --->
+    'Content-Type' : 'application/json'
+}
+
+Request Query 
+```
+Example : api/image/<imageId>
+```
+
+Response 
+```
+{
+    'image' : {
+        'id' : <id>,
+        'title' : <title>,
+        'descriptio' : <description>
+    }
+}
+```
+
 ============== MESSSAGE ==============
 
-
-2. sendMessage 
+1. createRoom 
 Method : 'POST'
 URL :
 HEADERS
@@ -272,5 +508,48 @@ Request
 ```
 {
     
+}
+```
+
+2. sendMessage 
+Method : 'POST'
+URL :
+HEADERS
+
+{
+    "Authorization" : Bearer <token>,
+    'Content-Type' : 'application/json'
+}
+
+Request Body 
+```
+{
+    'userid_target' : <userId>,
+    'message' : <message>
+}
+```
+
+Response 
+```
+{
+    'message' : 'success'
+}
+```
+
+3. getMessage 
+Method : 'POST'
+URL :
+HEADERS
+
+{
+    "Authorization" : Bearer <token>
+}
+
+Request 
+```
+{
+    'userId' : <userid>,
+    'latest' : 'true',
+    'count' : 5
 }
 ```
