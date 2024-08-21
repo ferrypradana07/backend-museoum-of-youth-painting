@@ -123,7 +123,7 @@ exports.getUsers = async (offset, order, limit) => {
         const usersData = await users.findAll({
             attributes : ['username', 'photo_profile'],
             offset : offset,
-            order: ['createAt', order],
+            order: [['createdAt', order]],
             limit:limit,
         }) 
         if (!usersData || usersData.length == 0) {
@@ -194,6 +194,24 @@ exports.validationUsername = async(username) => {
         return valid? false : true
     } catch (error) {
         console.error('Error while validating username ',error)
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
+    }
+}
+
+exports.validationEmail = async(email) => {
+    try {
+        const valid = await users.findOne({
+                where : {
+                    email : email 
+                },
+                attributes : ['email']
+            }
+        ) 
+        return valid? false : true
+    } catch (error) {
+        console.error('Error while validating email in service ',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}

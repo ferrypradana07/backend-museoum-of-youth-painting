@@ -1,4 +1,3 @@
-const { where } = require('sequelize')
 const {images} = require('../model/imageModel')
 
 exports.createImageData = async (userId, URL, title, description) => {
@@ -49,7 +48,38 @@ exports.deleteImageData = async (imageId, userId) => {
     }
 }
 
-exports.getUserImagesData = async (userId, offset, limit, order) => {
+exports.getURLimageByImageId = async (array) => {
+    try {
+        const result = await Promise.all(array.map( async (index) => {
+            const image = await images.findOne({
+                where :{
+                    id : index
+                },
+                attributes : ['URL']
+            })
+            const result = {
+                imageId : index,
+                'URL' : URL
+            }
+            return URL?{'URL' : image.URL,'imageId' : index }: ''
+        })) 
+        
+        console.log(result)
+        if (!result) {
+            return {'failed':{
+                'message' : 'images not found'
+            }}
+        }
+        return result
+    } catch (error) {
+        console.error('Error while get URL images data in service ', error)
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
+    }
+}
+
+exports.getUserImagesData = async (userId, offset, order, limit) => {
     try {
         const result = await images.findAll({
             where : {
@@ -57,18 +87,18 @@ exports.getUserImagesData = async (userId, offset, limit, order) => {
             },
             offset : offset,
             limit: limit+1,
-            order : ['createAt', order]
+            order : [['createdAt', order]]
         })
         if (result) {
             if (result.length <= limit) {
                 return {
-                    'islast' : false,
+                    'islast' : true,
                     'images' : result
                 }
             } else {
                 result.pop()
                 return {
-                    'islast' : true,
+                    'islast' : false,
                     'images' : result
                 }
             }
@@ -84,26 +114,59 @@ exports.getUserImagesData = async (userId, offset, limit, order) => {
     }
 }
 
-exports.getImagesData = async (userId, offset, limit, order) => {
+exports.getImagesDataByTitle = async (title) => {
     try {
         const result = await images.findAll({
             where : {
-                userId : userId
+                title : title
             },
             offset : offset,
             limit: limit+1,
-            order : ['createAt', order]
+            order : [['createdAt', order]]
         })
         if (result) {
             if (result.length <= limit) {
                 return {
-                    'islast' : false,
+                    'islast' : true,
                     'images' : result
                 }
             } else {
                 result.pop()
                 return {
+                    'islast' : false,
+                    'images' : result
+                }
+            }
+        }
+        return {'failed' : {
+            'message' : 'image data not found'
+        }}
+    } catch (error) {
+        console.error('error while get image data by title in service', error)
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
+    }
+}
+
+exports.getImagesData = async (offset, order, limit) => {
+    try {
+        const result = await images.findAll({
+            offset : offset,
+            limit: limit,
+            order : [['createdAt', 'ASC']],
+            attributes : ['id', 'URL', 'title', 'description']
+        })
+        if (result) {
+            if (result.length <= limit) {
+                return {
                     'islast' : true,
+                    'images' : result
+                }
+            } else {
+                result.pop()
+                return {
+                    'islast' : false,
                     'images' : result
                 }
             }
@@ -112,7 +175,7 @@ exports.getImagesData = async (userId, offset, limit, order) => {
             'message' : 'Failed get images data'
         }}
     } catch (error) {
-        console.error('error while get user image service', error)
+        console.error('error while get images service', error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}

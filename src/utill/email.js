@@ -1,4 +1,4 @@
-exports.emailValidation = async (email) => {
+exports.validEmail = async (email) => {
     try {
         if (email.endsWith('.com') && email.includes('@')){
             return true

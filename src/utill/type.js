@@ -12,3 +12,14 @@ exports.arrayValidator = async (input) => {
     const result = typeof number === 'array'
     return result
 }
+
+exports.converToNumberType = async (...Number) => {
+    Number.map(number => {
+        const numberType = Number(number)
+        return numberType
+    })
+}
+
+exports.convertToNumberType = async (input) => {
+    return Number(input)
+}

@@ -22,7 +22,7 @@ exports.getImageDetail = async (req, res) => {
             })
         }
         res.status(200).json({
-            'image' : result
+            ...result
         })
     } catch (error) {
         console.error('error while getting image', error)

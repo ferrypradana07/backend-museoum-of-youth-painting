@@ -24,7 +24,7 @@ exports.createCollectionData = async (userId, imageId) =>{
 
 exports.deleteCollectionData = async (userId, imageId) =>{
     try {
-        const result = await collections.delete({
+        const result = await collections.destroy({
             where : {
                 userId : userId,
                 imageId : imageId
@@ -39,14 +39,14 @@ exports.deleteCollectionData = async (userId, imageId) =>{
             'message' : 'Failed deleting collection data'
         }}
     } catch (error) {
-        console.error('Error while create collection data in service',error)
+        console.error('Error while delete collection data in service',error)
       return {'error' : {
                 'message' : 'Something going wrong'
             }}
     }
 }
 
-exports.getUserCollectionsData = async (userId, offset, limit, order) =>{
+exports.getUserCollectionsData = async (userId, offset, order, limit) =>{
     try {
         const result = await collections.findAll({
             where : {
@@ -54,7 +54,7 @@ exports.getUserCollectionsData = async (userId, offset, limit, order) =>{
             },
             attributes : ['imageId'],
             offset : offset,
-            order : ['createAt', order],
+            order : [['createdAt', order]],
             limit : limit
         })
         if (result) {
@@ -62,7 +62,7 @@ exports.getUserCollectionsData = async (userId, offset, limit, order) =>{
         }
         return []
     } catch (error) {
-        console.error('Error while create collection data in service',error)
+        console.error('Error while get user collection data in service',error)
       return {'error' : {
                 'message' : 'Something going wrong'
             }}

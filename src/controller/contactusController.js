@@ -1,6 +1,6 @@
 
 const { getContacUsFormData, createContacUsFormData } = require('../service/contactusService')
-const {numberValidator} = require('../utill/type')
+const {numberValidator, convertToNumberType} = require('../utill/type')
 
 exports.getContactUsForm = async(req, res) => {
     try {
@@ -22,7 +22,9 @@ exports.getContactUsForm = async(req, res) => {
             })
         }
         const order = 'ASC'
-        const result = await getContacUsFormData(offset, order, limit)
+        const newOffset = await convertToNumberType(offset)
+        const newLimit = await convertToNumberType(limit)
+        const result = await getContacUsFormData(newOffset, order, newLimit)
         if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {
@@ -46,6 +48,7 @@ exports.getContactUsForm = async(req, res) => {
 exports.createContactUsForm = async(req, res) => {
     try {
         const {username, email, subject, message} = req.body??''
+        console.log(req)
         if (!username || !email || !subject || !message) {
             return res.status(400).json({
                 'error' : {

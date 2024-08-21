@@ -1,9 +1,10 @@
-const {login, signup, updateUserData, updatePassword, validationUsername} = require('../service/userService')
+const {login, signup, updateUserData, updatePassword, validationUsername, validationEmail} = require('../service/userService')
 const {signToken} = require('../middleware/jwtMiddleware')
 const {passwordValidation} = require('../utill/password')
 const {getCountryById} = require('../service/countryService')
 const { numberValidator } = require('../utill/type')
-const {emailValidation} = require('../utill/email')
+const {validEmail} = require('../utill/email')
+const {createNotificationData} = require('../service/notificationService')
 
 exports.authorization = async (req, res) => {
     try {
@@ -61,19 +62,28 @@ exports.register = async (req, res) => {
                 }
             })
         }
-        const isValidUsername = await validationUsername(username)
-        if (!isValidUsername) {
+        const isAvailableUsername = await validationUsername(username)
+        if (!isAvailableUsername) {
             return res.status(400).json({
                 'error' : {
                     'message' : `username is unavailable`
                 }
             })
         }
-        const isValidEmail = await emailValidation(email)
+        const isValidEmail = await validEmail(email)
         if (!isValidEmail) {
             return res.status(400).json({
                 'error' : {
                     'message' : `email is invalid`
+                }
+            })
+            
+        }
+        const isAvailableEmail = await validationEmail(email)
+        if (!isAvailableEmail) {
+            return res.status(400).json({
+                'error' : {
+                    'message' : `email is unanvailable`
                 }
             })
             
@@ -89,7 +99,7 @@ exports.register = async (req, res) => {
         }
         const {id} = result
         const token = await signToken(id, 'user', username)
-        return res.status(201).json(
+        res.status(201).json(
             {   
                 'message' : 'user registered succesfully',
                 'token' : token, 
@@ -99,6 +109,7 @@ exports.register = async (req, res) => {
                 }
             }
         )
+        await createNotificationData(id,'<title>welcome to museoum of paint</title>','<title>welcome to museoum of paint</title>')
     } catch (error) {
         console.error('Error while registering user in userController',error)
         return res.status(500).json({

@@ -6,7 +6,7 @@ const {v4: uuidv4} = require('uuid')
 const images = sequelize.define('images', {
     id : {
         type : DataTypes.UUID,
-        defaultValue : uuidv4,
+        defaultValue : uuidv4(),
         primaryKey : true
     }, 
     userId : {

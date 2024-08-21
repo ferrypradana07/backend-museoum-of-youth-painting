@@ -6,7 +6,7 @@ const { fields } = require('../middleware/multerMiddleware')
 const contactus = sequelize.define('contactus', {
     id : {
         type : DataTypes.UUID,
-        defaultValue : uuidv4,
+        defaultValue : uuidv4(),
         primaryKey : true
     }, 
     username : {
@@ -17,11 +17,11 @@ const contactus = sequelize.define('contactus', {
         type : DataTypes.STRING,
         allowNull : false,
     }, 
-    title : {
+    subject : {
         type : DataTypes.STRING,
         allowNull : false,
     }, 
-    messaga : {
+    message : {
         type : DataTypes.STRING,
         allowNull : false,
     }, 

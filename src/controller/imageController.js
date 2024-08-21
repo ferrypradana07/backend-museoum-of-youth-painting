@@ -1,6 +1,7 @@
 const {createImageData, deleteImageData, getImagesData, getUserImagesData, getImageData} = require('../service/imageService')
 const {createURL} = require('../utill/location')
 const {createArrayNotifObject} = require('../utill/notification')
+const {createNotificationBulkData} = require('../service/notificationService')
 const {getFollowersIdData} = require('../service/followerService')
 const {getUsernameByUserId} = require('../service/userService')
 
@@ -10,14 +11,14 @@ exports.createImage = async (req, res) => {
         const imageIdentifier = req.imageIdentifier??''
         const {title, description} = req.body??''
         res.set('Content-Type', 'application/json')
-        if (!title || !imageIdentifier) {
+        if (!title || !description) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'image name is require'
+                    'message' : 'image title is require'
                 }
             })
         } 
-        const cdnAccess = await createURL(`/cdn/${imageIdentifier}`)
+        const cdnAccess = await createURL(`cdn/${imageIdentifier}`)
         const message = await createImageData(userId, cdnAccess, title, description)
         if (message.failed || message.failed) {
             return res.status(500).json({
@@ -40,7 +41,8 @@ exports.createImage = async (req, res) => {
         const array = await getFollowersIdData(userId)
         if (array) {
             const username = await getUsernameByUserId(userId)
-            await createArrayNotifObject(array.followers, '<username>'+ username + '</username> upload new image', '<username>'+username+ '</username> upload new image')
+            const bulkData = await createArrayNotifObject(array.followers, '<username>'+ username + '</username> upload new image', '<username>'+username+ '</username> upload new image')
+            await createNotificationBulkData(bulkData)
         }
     } catch (error) {
         console.error('Error while create image in controller',error)

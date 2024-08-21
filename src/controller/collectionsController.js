@@ -1,6 +1,8 @@
 
 const {createCollectionData, deleteCollectionData, getCollectionData, getUserCollectionsData} = require('../service/collectionService')
-const {numberValidator} = require('../utill/type')
+const {numberValidator, convertToNumberType} = require('../utill/type')
+const {exportImageId} = require('../utill/array')
+const {getURLimageByImageId} = require('../service/imageService')
 
 exports.getUserCollection = async(req, res) => {
     try {
@@ -22,7 +24,18 @@ exports.getUserCollection = async(req, res) => {
             })
         }
         const order = 'ASC'
-        const result = await getUserCollectionsData(offset, order, limit)
+        const newOffset = await convertToNumberType(offset)
+        const newLimit = await convertToNumberType(limit)
+        const collections = await getUserCollectionsData(userId, newOffset, order, newLimit)
+        if (collections.failed || collections.error) {
+            return res.status(400).json({
+                'error' : {
+                    'message' : collections.failed?collections.failed.message:collections.error.message
+                }
+            })
+        }
+        const array = await exportImageId(collections)
+        const result = await getURLimageByImageId(array)
         if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {

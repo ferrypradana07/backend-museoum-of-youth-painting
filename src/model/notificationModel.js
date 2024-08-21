@@ -6,7 +6,7 @@ const {v4: uuidv4} = require('uuid')
 const notification = sequelize.define('notifications', {
     id : {
         type : DataTypes.UUID,
-        defaultValue : uuidv4,
+        defaultValue : uuidv4(),
         primaryKey : true
     }, 
     userId : {

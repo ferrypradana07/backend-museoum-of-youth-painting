@@ -25,7 +25,7 @@ exports.createLikeData = async (userId, postId, imageId) =>{
 
 exports.deleteLikeData = async (userId, imageId) =>{
     try {
-        const result = await likes.delete({
+        const result = await likes.destroy({
             userId : userId,
             imageId : imageId
         })

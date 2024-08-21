@@ -7,5 +7,5 @@ const router = express.Router()
 
 router.post('/:imageId', verifyToken, collectionController.createCollection)
 router.delete('/:imageId', verifyToken, collectionController.deleteCollection)
-
+// success
 module.exports = router

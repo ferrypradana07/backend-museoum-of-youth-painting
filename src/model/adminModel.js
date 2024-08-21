@@ -6,7 +6,7 @@ const { fields } = require('../middleware/multerMiddleware')
 const admins = sequelize.define('admins', {
     id : {
         type : DataTypes.UUID,
-        defaultValue : uuidv4,
+        defaultValue : uuidv4(),
         primaryKey : true
     }, 
     username : {

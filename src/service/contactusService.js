@@ -6,7 +6,7 @@ exports.createContacUsFormData = async (username, email, subject, message) =>{
             username : username,
             email : email,
             subject : subject,
-            essage : message
+            message : message
         })
         if (result) {
             return {'success' : {

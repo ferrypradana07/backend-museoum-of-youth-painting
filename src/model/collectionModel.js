@@ -10,7 +10,7 @@ const collections = sequelize.define('collections', {
         autoIncrement : true
     },
     userId : {
-        type : DataTypes.INTEGER,
+        type : DataTypes.UUID,
         allowNull : false,
         referance : {
             model : users,
@@ -18,7 +18,7 @@ const collections = sequelize.define('collections', {
         }
     }, 
     imageId : {
-        type : DataTypes.INTEGER,
+        type : DataTypes.UUID,
         allowNull : false,
         referance : {
             model : images,

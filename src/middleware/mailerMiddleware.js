@@ -1,4 +1,4 @@
-const { MAIL_USERNAME, MAIL_PASSWORD } = require("../config/config");
+const { MAIL_USERNAME, MAIL_PASSWORD, MAIL_SERVICE } = require("../config/config");
 const { emailValidation } = require('../utill/email')
 const nodeMailer = require('nodemailer');
 //  @params mailObject = {to : <array>, subject : <>, text : <>}
@@ -8,7 +8,7 @@ const nodeMailer = require('nodemailer');
 exports.sendMail = async (req, res, next) => {
     const {mailObject} = req
     const transporter = nodeMailer.createTransport({
-        service : 'Gmail',
+        service : MAIL_SERVICE,
         auth : {
             user : MAIL_USERNAME,
             pass : MAIL_PASSWORD
