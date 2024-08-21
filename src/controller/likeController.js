@@ -50,6 +50,13 @@ exports.deleteLike = async (req, res) => {
             })
         }
         const result = await createLikeData(id, ownerId, imageId)
+        if (result.failed || result.error) {
+            return res.status(400).json({
+                'error' : {
+                    'message' : result.failed?result.failed.message:result.error.message
+                }
+            })
+        }
         res.status(200).json({
             'message' : 'success'
         })

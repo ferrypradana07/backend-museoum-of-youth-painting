@@ -6,7 +6,9 @@ exports.createURL = async (query) => {
         const URL = `https://${WEB_DOMAIN}/${query}`
         return URL
     } catch (error) {
-        console.log(error)
-        return 'error'
+        console.error('Error while create URL in utill',error)
+        return {'error' : {
+            'message' : 'something going error'
+        }}
     }
 } 

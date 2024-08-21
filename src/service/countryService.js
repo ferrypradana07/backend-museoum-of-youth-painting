@@ -11,9 +11,13 @@ exports.getCountryById = async (countryId) => {
         if (result) {
             return result
         }
-        return {}
+        return {'failed' : {
+            'message' : 'Failed get country data'
+        }}
     } catch (error) {
         console.error('Error while getting country data in service :',error)
-        return {'error' : 'somthing going wrong'}
+      return {'error' : {
+                'message' : 'Something going wrong'
+            }}
     }
 }

@@ -10,16 +10,22 @@ exports.login = async (email, password) => {
             attributes : ['id', 'username', 'photo_profile', 'password']
         }) 
         if (!result) {
-            return {}
+            return {'failed' : {
+                'message' : 'Not Found'
+            }}
         }
         const validation = bcrypt.compare(result.password, password)
         if (validation) {
             return result
         }
-        return {}
+        return {'failed' : {
+            'message' : 'password is not match'
+        }}
     } catch (error) {
-        console.error('Error while login in service',error)
-        return {'error' : error}
+        console.error('Error while user login in service',error)
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -34,10 +40,14 @@ exports.signup = async (username, email, password) => {
         if (result) {
             return result
         }
-        return {'failed' : 'failed'}
+        return {'failed' : {
+            'message' : 'failed create account'
+        }}
     } catch (error) {
         console.error('Error while signup in service',error)
-        return {'error' : error}
+        return {'error' : {
+            'message' : 'something going error'
+        }}
     }
 }
 
@@ -51,10 +61,14 @@ exports.deleteUser = async (userId) => {
         if (result) {
             return {'success' : 'success'}
         }
-        return {'failed' : 'failed'}
+        return {'failed' : {
+            'message' : 'Failed delete user account'
+        }}
     } catch (error) {
         console.error('Error while deleting user in service',error)
-        return {'error' : 'something going error'}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -77,7 +91,9 @@ exports.updatePassword = async (email, password) => {
         return {'success' : 'success'}
     } catch (error) {
         console.error('Error while updatePassword in service',error)
-        return {'error' : error}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -96,7 +112,9 @@ exports.updateUserData = async (id, username, description, country) => {
         return user
     } catch (error) {
         console.error('Error while update user data in service',error)
-        return {'error' : error}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -115,7 +133,9 @@ exports.getUsers = async (offset, order, limit) => {
         return usersData
     } catch (error) {
         console.error('Error while getting user data in service',error)
-        return {'error' : error}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -138,7 +158,9 @@ exports.userValidation = async (username, email, password) => {
         return {}
     } catch (error) {
         console.error('Error while validation user in service',error)
-        return {'error' : error}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -154,7 +176,9 @@ exports.getUsernameByUserId = async(userId) => {
         return username?username:{'failed' : 'not found'}
     } catch (error) {
         console.error('Error while getting username ',error)
-        return {'error' : 'error'}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -170,6 +194,8 @@ exports.validationUsername = async(username) => {
         return valid? false : true
     } catch (error) {
         console.error('Error while validating username ',error)
-        return {'error' : 'error'}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }

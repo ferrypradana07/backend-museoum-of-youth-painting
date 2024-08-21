@@ -10,14 +10,18 @@ exports.createImageData = async (userId, URL, title, description) => {
             description : description
         })
         if (image) {
-            return {
+            return { 'success' :{
                 'message' : 'success'
-            }
+            }}
         }
-        return {}
+        return  {'failed' : {
+            'message' : 'Failed create image data'
+        }}
     } catch (error) {
         console.error('Error while create image data in service',error)
-        return {'error' : 'somthing going wrong'}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -30,12 +34,18 @@ exports.deleteImageData = async (imageId, userId) => {
             }
         })
         if (image) {
-            return {'message' : 'success'}
+            return {'success':{
+                'message' : 'success delete image data'
+            }}
         }
-        return {}
+        return {'failed' : {
+            'message' : 'Failed delete image data'
+        }}
     } catch (error) {
         console.error('Error while delete image data in service',error)
-        return {'error' : 'somthing going wrong'}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -63,10 +73,14 @@ exports.getUserImagesData = async (userId, offset, limit, order) => {
                 }
             }
         }
-        return {}
+        return {'failed' : {
+            'message' : 'image data not found'
+        }}
     } catch (error) {
         console.error('error while get user image service', error)
-        return {'error' : 'somthing going wrong'}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -94,10 +108,14 @@ exports.getImagesData = async (userId, offset, limit, order) => {
                 }
             }
         }
-        return {}
+        return {'failed' : {
+            'message' : 'Failed get images data'
+        }}
     } catch (error) {
         console.error('error while get user image service', error)
-        return {'error' : 'somthing going wrong'}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -110,9 +128,13 @@ exports.getOwnerIdByImageId = async(imageId) => {
                 }
             }
         ) 
-        return ownerId?ownerId:''
+        return ownerId?ownerId:{'failed' : {
+            'message' : 'Failed get owner id'
+        }}
     } catch (error) {
         console.error('Error while deleting image ',error)
-        return {'error' : 'error'}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }

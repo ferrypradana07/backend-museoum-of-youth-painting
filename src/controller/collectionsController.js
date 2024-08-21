@@ -23,18 +23,18 @@ exports.getUserCollection = async(req, res) => {
         }
         const order = 'ASC'
         const result = await getUserCollectionsData(offset, order, limit)
-        if (!result || result.error) {
+        if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'failed create like'
+                    'message' : result.failed?result.failed.message:result.error.message
                 }
             })
         }
         res.status(200).json({
-            'message' : 'success'
+            'collections' : result
         })
     } catch (error) {
-        console.error('Error while creating collection in controller',error)
+        console.error('Error while getting collection in controller',error)
         return res.status(400).json({
             'error' : {
                 'message' : 'something going wrong'

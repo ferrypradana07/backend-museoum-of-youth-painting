@@ -7,10 +7,10 @@ exports.createNotifObject = async (userId, usernamePost, messaga) => {
         } 
         return result
     } catch (error) {
-        console.error('Error while validating password in utill', error)
-        return {
-            'error' : 'something going wrong'
-        }
+        console.error('Error while create Notification Objcet in utill',error)
+        return {'error' : {
+            'message' : 'something going error'
+        }}
     }
 }
 
@@ -23,9 +23,9 @@ exports.createArrayNotifObject = async (arrayUserId, title, message) => {
         }))
         return result
     } catch (error) {
-        console.error('Error while validating password in utill', error)
-        return {
-            'error' : 'something going wrong'
-        }
+        console.error('Error while create Array Notif Object in utill',error)
+        return {'error' : {
+            'message' : 'something going error'
+        }}
     }
 }

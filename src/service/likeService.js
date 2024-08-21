@@ -8,12 +8,18 @@ exports.createLikeData = async (userId, postId, imageId) =>{
             imageId : imageId
         })
         if (result) {
-            return {'message': "success"}
+            return {'success': {
+                'message' : "success"
+            }}
         }
-        return {'failed': "failed"}
+        return  {'failed' : {
+            'message' : 'Failed create user like'
+        }}
     } catch (error) {
         console.error('Error while create like data in service',error)
-        return {'error' : 'somthing going wrong'}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -24,11 +30,15 @@ exports.deleteLikeData = async (userId, imageId) =>{
             imageId : imageId
         })
         if (result) {
-            return {'message': "success"}
+            return {'success': {'message' : "success"}}
         }
-        return {'failed': "failed"}
+        return  {'failed' : {
+            'message' : 'Failed delete user like'
+        }}
     } catch (error) {
         console.error('Error while create like data in service',error)
-        return {'error' : 'somthing going wrong'}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }

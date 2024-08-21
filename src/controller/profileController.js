@@ -13,14 +13,15 @@ exports.getProfile = async(req, res) => {
         }
         const {id} = req.decoded??''
         const result = await getProfileData(userId, id)
-        if (!result || result.error || result.failed) {
+        if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {
-                    'message' : result.error?result.error:'not found'
+                    'message' : result.failed?result.failed.message:result.error.message
                 }
             })
         }
-        res.status(200).json({ ...result
+        res.status(200).json({ 
+            ...result
         })
     } catch (error) {
         console.error('Error while getprofile in controller', error)

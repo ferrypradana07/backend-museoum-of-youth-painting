@@ -16,7 +16,9 @@ exports.getProfileData = async (userId, authId) => {
             attributes : ['username', 'photo_profile', 'description', 'country']
         })
         if (!userData) {
-            return {'failed' : 'Not Found'}
+            return  {'failed' : {
+                'message' : 'User data not found'
+            }}
         }
         const country = await getCountryById(userData.country)
         userData.country = country.country
@@ -57,9 +59,13 @@ exports.getProfileData = async (userId, authId) => {
             result = {...userData.user, 'collections' : collectionData, 'images' : imageData, like : likeData, follower: followerData}
             return {'user' : result, 'isfollow' : hasFollowed?true:false}
         }
-        return {'failed' : 'not found'}
+        return {'failed' : {
+            'message' : 'failed getting user profile'
+        }}
     } catch (error) {
         console.error('Error while getprofiledata in service', error)
-        return {'error' : 'error'} 
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }

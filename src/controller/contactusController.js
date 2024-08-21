@@ -23,15 +23,15 @@ exports.getContactUsForm = async(req, res) => {
         }
         const order = 'ASC'
         const result = await getContacUsFormData(offset, order, limit)
-        if (!result || result.error) {
+        if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'failed create like'
+                    'message' : result.failed?result.failed.message:result.error.message
                 }
             })
         }
         res.status(200).json({
-            'message' : 'success'
+            'forms' : result
         })
     } catch (error) {
         console.error('Error while getting form in controller',error)
@@ -54,10 +54,10 @@ exports.createContactUsForm = async(req, res) => {
             })
         }
         const result = await createContacUsFormData(username, email, subject, message)
-        if (!result || result.error) {
+        if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'failed create like'
+                    'message' : result.failed?result.failed.message:result.error.message
                 }
             })
         }

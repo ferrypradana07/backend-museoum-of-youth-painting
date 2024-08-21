@@ -23,10 +23,10 @@ exports.getUserImages = async (req, res) => {
             })
         }
         const result = await getUserImagesData(userId, offset, order, limit)
-        if (!result || result.error) {
+        if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {
-                    'message' : result.error?result.error.message:'not found'
+                    'message' : result.failed?result.failed.message:result.error.message
                 }
             })
         }
@@ -34,7 +34,7 @@ exports.getUserImages = async (req, res) => {
             'images' : result
         })
     } catch (error) {
-        console.error('error while getting image', error)
+        console.error('error while getting user images in controller', error)
         res.status(500).json({
             'error' : {
                 'message' : 'something going wrong'
@@ -47,7 +47,7 @@ exports.getUserImages = async (req, res) => {
 exports.getImages = async (req, res) => {
     try {
         const {limit, offset} = req.query??'';
-        const order = req.query.order?req.query.order: ASC 
+        const order = req.query.order?req.query.order: 'ASC' 
         res.set('Content-Type', 'application/json')
         if (!limit || !offset) {
             return res.status(400).json({
@@ -57,11 +57,18 @@ exports.getImages = async (req, res) => {
             })
         }
         const result = await getImagesData(offset, order, limit)
+        if (result.failed || result.error) {
+            return res.status(400).json({
+                'error' : {
+                    'message' : result.failed?result.failed.message:result.error.message
+                }
+            })
+        }
         res.status(200).json({
             'images' : result
         })
     } catch (error) {
-        console.error('error while getting image', error)
+        console.error('error while getting image in controller', error)
         res.status(500).json({
             'error' : {
                 'message' : 'something going wrong'

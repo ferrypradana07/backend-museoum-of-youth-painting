@@ -19,11 +19,6 @@ exports.createImage = async (req, res) => {
         } 
         const cdnAccess = await createURL(`/cdn/${imageIdentifier}`)
         const message = await createImageData(userId, cdnAccess, title, description)
-        if (message) {
-            return res.status(201).json({
-                'message' : 'image upload successfully'
-            })
-        }
         if (message.failed || message.failed) {
             return res.status(500).json({
                 'error' : {
@@ -31,6 +26,12 @@ exports.createImage = async (req, res) => {
                 }
             })
         }
+        if (message) {
+            return res.status(201).json({
+                'message' : 'image upload successfully'
+            })
+        }
+        
         res.status(500).json({
             'error' : {
                 'message' : 'something going wrong'
@@ -42,7 +43,7 @@ exports.createImage = async (req, res) => {
             await createArrayNotifObject(array.followers, '<username>'+ username + '</username> upload new image', '<username>'+username+ '</username> upload new image')
         }
     } catch (error) {
-        console.log(error)
+        console.error('Error while create image in controller',error)
         return res.status(400).json({
             'error' : {
                 'message' : 'something going wrong'
@@ -64,16 +65,17 @@ exports.deleteImage = async (req, res) => {
             })
         } 
         const message = await deleteImageData(imageId, id)
-        if (message) {
-            return res.status(201).json({
-                'message' : 'image upload successfully'
-            })
-        }
-        if (message.failed || message.failed) {
+        
+        if (message.failed || message.error) {
             return res.status(500).json({
                 'error' : {
-                    'message' : message.error?message.error:message.failed
+                    'message' : message.error?message.error.message:message.failed.message
                 }
+            })
+        }
+        if (message) {
+            return res.status(201).json({
+                'message' : 'image deleted'
             })
         }
         res.status(500).json({

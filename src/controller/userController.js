@@ -18,15 +18,18 @@ exports.authorization = async (req, res) => {
         }
         const result = await login(email, password)
 
-        if (!result || result.error) {
-            return res.status(404).json({
+        if (result.failed || result.error) {
+            return res.status(400).json({
                 'error' : {
-                    'message' : 'email or password is invalid'
+                    'message' : result.failed?result.failed.message:result.error.message
                 }
             })
         }
         const token = await signToken(result.id, 'user', result.username)
-        return res.status(200).json({'token': token ,'message' : 'success'})
+        return res.status(200).json({
+            'token': token ,
+            'message' : 'success'
+        })
     } catch (error) {
         console.error('Error while authorization user in userController',error)
         return res.status(500).json({
@@ -44,7 +47,7 @@ exports.register = async (req, res) => {
         if (!username || !email || !password) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'username or email or password are required'
+                    'message' : 'username, email and password are required'
                 }
             })
         }
@@ -65,7 +68,6 @@ exports.register = async (req, res) => {
                     'message' : `username is unavailable`
                 }
             })
-            
         }
         const isValidEmail = await emailValidation(email)
         if (!isValidEmail) {
@@ -77,11 +79,11 @@ exports.register = async (req, res) => {
             
         }
         const result = await signup(username, email, password)
-
-        if (!result || result.error) {
-            return res.status(404).json({
+        
+        if (result.failed || result.error) {
+            return res.status(400).json({
                 'error' : {
-                    'message' : 'username or email or password is invalid'
+                    'message' : result.failed?result.failed.message:result.error.message
                 }
             })
         }

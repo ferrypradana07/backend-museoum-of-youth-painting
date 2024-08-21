@@ -10,7 +10,9 @@ exports.getImageDetailData = async (imageId, userId) => {
             }
         })
         if (!image) {
-            return {}
+            return {'failed' : {
+                'message' : 'Failed get image data'
+            }}
         }
         if (!userId) {
             return image
@@ -34,6 +36,8 @@ exports.getImageDetailData = async (imageId, userId) => {
         }
     } catch (error) {
         console.error('Error while getting content data in service',error)
-        return {'error' : 'somthing going wrong'}
+        return {'error' : {
+                'message' : 'Something going wrong'
+            }}
     }
 }

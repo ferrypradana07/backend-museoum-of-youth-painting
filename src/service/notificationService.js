@@ -10,7 +10,9 @@ exports.createNotificationData = async (userId, title, message) =>{
         if (result) {
             return {'success' : 'success'}
         }
-        return {}
+        return  {'failed' : {
+            'message' : 'Failed bulk create notification'
+        }}
     } catch (error) {
         console.error('Error while create collection data in service',error)
         return {'error' : 'somthing going wrong'}
@@ -25,7 +27,9 @@ exports.createNotificationBulkData = async (arrayInput) =>{
         if (result) {
             return {'success' : 'success'}
         }
-        return {}
+        return  {'failed' : {
+            'message' : 'Failed create notification'
+        }}
     } catch (error) {
         console.error('Error while create notification bulk data in service',error)
         return {'error' : 'something going wrong'}
@@ -45,9 +49,13 @@ exports.getNotificationsData = async (userId, limit) =>{
         if (result) {
             return {'notifications' : result}
         }
-        return {}
+        return  {'failed' : {
+            'message' : 'Not found'
+        }}
     } catch (error) {
         console.error('Error while getting notification data in service',error)
-        return {'error' : 'somthing going wrong'}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }

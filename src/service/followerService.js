@@ -7,12 +7,18 @@ exports.createFollowerData = async (userId, postId) =>{
             postId : postId
         })
         if (result) {
-            return {'success' : 'success'}
+            return {'success' : {
+                'message':'success'
+            }}
         }
-        return {}
+        return {'failed' : {
+            'message' : 'Failed create follower data'
+        }}
     } catch (error) {
         console.error('Error while create follower data in service',error)
-        return {'error' : 'somthing going wrong'}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -25,12 +31,18 @@ exports.deleteFollowerData = async (userId, postId) =>{
             }
         })
         if (result) {
-            return {'success' : 'success'}
+            return {'success' : {
+                'message' : 'success'
+            }}
         }
-        return {}
+        return {'failed' : {
+            'message' : 'Failed delete image data'
+        }}
     } catch (error) {
         console.error('Error while deleteing follower data in service',error)
-        return {'error' : 'somthing going wrong'}
+        return {'error' : {
+            'message' : 'Something going wrong'
+        }}
     }
 }
 
@@ -47,6 +59,8 @@ exports.getFollowersIdData = async (postId) =>{
         return []
     } catch (error) {
         console.error('Error while getting followers data in service',error)
-        return {'error' : 'somthing going wrong'}
+      return {'error' : {
+                'message' : 'Something going wrong'
+            }}
     }
 }

@@ -9,12 +9,18 @@ exports.createContacUsFormData = async (username, email, subject, message) =>{
             essage : message
         })
         if (result) {
-            return {'success' : 'success'}
+            return {'success' : {
+                'message':'success'
+            }}
         }
-        return {}
+        return {'failed' : {
+            'message' : 'Failed create form data'
+        }}
     } catch (error) {
         console.error('Error while create form data in service',error)
-        return {'error' : 'somthing going wrong'}
+        return {'error' : {
+                'message' : 'Something going wrong'
+            }}
     }
 }
 
@@ -28,9 +34,13 @@ exports.getContacUsFormData = async (offset, order, limit) =>{
         if (result.length > 0) {
             return {'forms' : result}
         }
-        return {}
+        return {'failed' : {
+            'message' : 'Failed get form data'
+        }}
     } catch (error) {
         console.error('Error while getting form data in service',error)
-        return {'error' : 'somthing going wrong'}
+      return {'error' : {
+                'message' : 'Something going wrong'
+            }}
     }
 }

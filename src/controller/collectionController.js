@@ -13,10 +13,10 @@ exports.createCollection = async(req, res) => {
             })
         }
         const result = await createCollectionData(id, imageId)
-        if (!result || result.error) {
+        if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'failed create like'
+                    'message' : result.failed?result.failed.message:result.error.message
                 }
             })
         }
@@ -45,10 +45,10 @@ exports.deleteCollection = async(req, res) => {
             })
         }
         const result = await deleteCollectionData(id, imageId)
-        if (!result || result.error) {
+        if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'failed create like'
+                    'message' : result.failed?result.failed.message:result.error.message
                 }
             })
         }

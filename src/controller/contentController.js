@@ -14,15 +14,15 @@ exports.getImageDetail = async (req, res) => {
             })
         }
         const result = await getImageDetailData(imageId, id)
-        if (!result || result.error) {
+        if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {
-                    'message' : result.error?result.error.message:'not found'
+                    'message' : result.failed?result.failed.message:result.error.message
                 }
             })
         }
         res.status(200).json({
-            image : result
+            'image' : result
         })
     } catch (error) {
         console.error('error while getting image', error)

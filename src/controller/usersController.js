@@ -23,10 +23,11 @@ exports.getUsers = async (req, res) => {
         const offset = page * 15
         const result = await getUsers(offset, order, limit)
 
-        if (!result || result.error) {
+        if (result.failed || result.error) {
             return res.status(400).json({
-                'message' : 'Not Found',
-                'users' : {}
+                'error' : {
+                    'message' : result.failed?result.failed.message:result.error.message
+                }
             })
         }
         return res.status(200).json({"users" : result.users})

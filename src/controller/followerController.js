@@ -12,10 +12,10 @@ exports.createfollower = async(req, res) => {
             })
         }
         const result = await createFollowerData(id, userId)
-        if (!result || result.error) {
+        if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'failed create like'
+                    'message' : result.failed?result.failed.message:result.error.message
                 }
             })
         }
@@ -36,18 +36,18 @@ exports.deletefollower = async(req, res) => {
     try {
         const {userId} = req.params??''
         const {id} = req.decoded??''
-        if (!imageId) {
+        if (!userId) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'imageId is required'
+                    'message' : 'userId is required'
                 }
             })
         }
         const result = await deleteFollowerData(id, userId)
-        if (!result || result.error) {
+        if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'failed create like'
+                    'message' : result.failed?result.failed.message:result.error.message
                 }
             })
         }
