@@ -13,6 +13,8 @@ const notificationsRoutes = require('./notificationsRoute')
 const followerRoutes = require('./followerRoutes')
 const devRoutes = require('./devRoutes')
 const contactRoutes = require('./contactusRoutes')
+const commentsRoute = require('./commentsRoutes')
+const commentRoutes = require('./commentRoutes')
 
 const router = express.Router()
 
@@ -29,6 +31,8 @@ router.use('/api/like', likeRoutes)
 router.use('/api/notifications', notificationsRoutes)
 router.use('/api/follower', followerRoutes)
 router.use('/api/contactus', contactRoutes)
+router.use('/api/comment', commentRoutes)
+router.use('/api/comments', commentsRoute)
 
 
 module.exports = router

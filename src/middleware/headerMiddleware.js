@@ -1,6 +1,5 @@
 exports.headerContentTypeJSON = async (req, res, next) => {
     try {
-        console.log('===============')
         const contentTypeHeader = req.headers['content-type']??''
         console.log(contentTypeHeader)
         console.log(req.headers)
@@ -11,18 +10,18 @@ exports.headerContentTypeJSON = async (req, res, next) => {
                 }
             })
         }
-        if (contentTypeHeader != 'application/json' || !contentTypeHeader.includes('json')) {
+        if (!contentTypeHeader.includes('application/json')) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'header Content-Type is required'
+                    'message' : 'header Content-Type is invalid'
                 }
             })
         }
         return next()
         
     } catch (error) {
-        console.error('Error while validation header', error)
-        res.status(400).json({
+        console.error('Error while validation header APPLICATION/JSON', error)
+        res.status(500).json({
             'error' : {
                 'message' : 'something going error'
             }
@@ -42,18 +41,18 @@ exports.headerContentTypeMultipartFormData = async (req, res, next) => {
                 }
             })
         }
-        if (!contentTypeHeader.includes('form-data') || !contentTypeHeader.includes('form-data')) {
+        if (!contentTypeHeader.includes('multipart/form-data')) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'header Content-Type is required'
+                    'message' : 'header Content-Type is invalid'
                 }
             })
         }
         return next()
         
     } catch (error) {
-        console.error('Error while validation header', error)
-        res.status(400).json({
+        console.error('Error while validation header MULTIPART/FROM-DATA', error)
+        res.status(500).json({
             'error' : {
                 'message' : 'something going error'
             }
@@ -71,18 +70,18 @@ exports.headerContentTypeXURLEncoded = async (req, res, next) => {
                 }
             })
         }
-        if (!contentTypeHeader.includes('x-www-form-urlencoded') || !contentTypeHeader.includes('form-urlencoded')) {
+        if (!contentTypeHeader.includes('x-www-form-urlencoded')) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'header Content-Type is required'
+                    'message' : 'header Content-Type is invalid'
                 }
             })
         }
         return next()
         
     } catch (error) {
-        console.error('Error while validation header', error)
-        res.status(400).json({
+        console.error('Error while validation header Type X-WWW-FORM-URLENCODED', error)
+        res.status(500).json({
             'error' : {
                 'message' : 'something going error'
             }

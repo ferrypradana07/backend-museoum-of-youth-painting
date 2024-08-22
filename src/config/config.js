@@ -23,7 +23,18 @@ const SECRET_CORS_KEY = process.env.SECRET_CORS_KEY
 const sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD,{
     host : DB_HOST,
     port : DB_PORT,
-    dialect : 'mysql'
+    dialect : 'mysql',
+    timezone : '+07:00',
+    dialectOptions : {
+        dateStrings : true,
+        typeCast : function (field, next){
+            if (field.type === 'DATETIME') {
+                return field.string()
+            }
+            return next()
+        }
+    },
+    logging : false,
 })
 
 module.exports = {

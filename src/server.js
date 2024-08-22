@@ -4,14 +4,58 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const routes = require('./routes');
 const { NODE_PORT, sequelize, WHITELIST, SECRET_CORS_KEY, NODE_ENV } = require('./config/config');
-const { FORCE } = require('sequelize/lib/index-hints');
-const cluster = require('cluster')
 const os = require('os')
-const morgan = require('morgan')
+const cluster = require('cluster')
 const helmet = require('helmet')
+const morgan = require('morgan')
+const logger = require('./logger')
 const rateLimiter = require('express-rate-limit');
 const session = require('express-session')
-const logger = require('./logger')
+
+const setupRateLimiter = () => rateLimiter({
+    windowMs : 15 * 60 * 1000, //
+    max : 100,
+    message : 'Too many request please try again later..'
+})
+
+const setupCORS = () => {
+    return cors({
+        origin : function (origin , callback){
+            if (WHITELIST.indexOf(origin) !== -1 || !origin) {
+                callback(null, true)
+            } else {
+                callback(new Error('Not allowed by CORS'))
+            }
+        }})
+}
+
+const setupSession = () => {
+    session({
+        secret : SECRET_CORS_KEY,
+        resave : false,
+        saveuUninitialize : true,
+        cookie : {
+            secure : NODE_ENV === 'production',
+            httpOnly : true, 
+            maxAge : 1000 * 60 * 60 * 72 //age session is 3 day
+        }
+    })
+}
+    
+const setupErrorHandler = () => (err, req, res, next) => {
+    logger.error(`Error message : ${err.message}`)
+    res.status(500).json({
+        'error' : {
+            'message' : 'something going wrong'
+        }
+    })
+}
+
+const setupLogger = () => morgan('combined', {
+        stream : {
+            write : (message) => logger.info(message.trim())
+        }
+    })
 
 if (cluster.isMaster) {
     let numCPUs = os.cpus().length
@@ -30,53 +74,19 @@ if (cluster.isMaster) {
         cluster.fork()
     })
 } else {      
-    const limiter = rateLimiter({
-        windowMs : 15 * 60 * 1000, //
-        max : 100,
-        message : 'Too many request please try again later..'
-    })
-    app.use(limiter)
+    app.use(setupRateLimiter())
     
-    const corsOption = {
-        origin : function (origin , callback){
-            if (WHITELIST.indexOf(origin) !== -1 || !origin) {
-                callback(null, true)
-            } else {
-                callback(new Error('Not allowed by CORS'))
-            }
-        }
-    }
-    app.use(cors(corsOption))
+    app.use(setupCORS())
     
     app.use(bodyParser.json({limit : '10kb'}))
     app.use(bodyParser.urlencoded({extended : true}))
 
-    app.use(session({
-        secret : SECRET_CORS_KEY,
-        resave : false,
-        saveuUninitialize : true,
-        cookie : {
-            secure : NODE_ENV === 'production',
-            httpOnly : true,
-            maxAge : 1000 * 60 * 60 *24
-        }
-    }))
+    app.use(setupSession())
 
     app.use(helmet())
-    app.use(morgan('combined', {
-        stream : {
-            write : (message) => logger.info(message.trim())
-        }
-    }))
+    app.use(setupLogger())
 
-    app.use((err, req, res, next) => {
-        logger.error(`Error message : ${err.message}`)
-        res.status(500).json({
-            'error' : {
-                'message' : 'something going error'
-            }
-        })
-    })
+    app.use(setupErrorHandler())
 
     app.use('/', routes)
 
@@ -88,7 +98,7 @@ if (cluster.isMaster) {
         .then(() => {console.log('connected with DDL database model')})
         .catch(err => {console.error('Error while syncronization sequelize in server', err)})
     
-        app.listen(NODE_PORT , () => {
+        app.listen(NODE_PORT, () => {
         console.log(`server running on port = ${NODE_PORT} `)
     })
 }

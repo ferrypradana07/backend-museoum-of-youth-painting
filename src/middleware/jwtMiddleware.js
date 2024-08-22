@@ -2,6 +2,21 @@ const jwt = require('jsonwebtoken');
 const { SECRET, WEB_DOMAIN } = require('../config/config');
 const {createURL} = require('../utill/location')
 
+
+exports.signToken = async (id, role, username) => {
+    try {
+        if (!id || !role || !username) {
+           return 'invalid'
+        }
+        const user = {id, role, username}
+        const token = jwt.sign(user, SECRET, {expiresIn : '240h'})
+        return token
+    } catch (error) {
+        console.error('Error while creating token in middleware', error)
+        return 'error'
+    }
+}
+
 exports.verifyToken = async (req, res, next) => {
     const authHeader = req.headers['authorization']??'';
     if (!authHeader) {
@@ -115,21 +130,6 @@ exports.optionalVerifyToken = async (req, res, next) => {
     }
     return next()
 }
-
-exports.signToken = async (id, role, username) => {
-    try {
-        if (!id || !role || !username) {
-           return 'invalid'
-        }
-        const user = {id, role, username}
-        const token = await jwt.sign(user, SECRET, {expiresIn : '240h'})
-        return token
-    } catch (error) {
-        console.error('Error while creating token in middleware', error)
-        return 'error'
-    }
-}
-
 
 exports.signTokenUpdatePass = async (req, res, next) => {
     try {

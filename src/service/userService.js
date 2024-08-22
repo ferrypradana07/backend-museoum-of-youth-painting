@@ -1,3 +1,4 @@
+const { Op, where } = require('sequelize')
 const {users} = require('../model/userModel')
 const bcrypt = require('bcrypt')
 
@@ -175,12 +176,13 @@ exports.getUsernameByUserId = async(userId) => {
         ) 
         return username?username:{'failed' : 'not found'}
     } catch (error) {
-        console.error('Error while getting username ',error)
+        console.error('Error while getting username in service',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
     }
 }
+
 
 exports.validationUsername = async(username) => {
     try {
