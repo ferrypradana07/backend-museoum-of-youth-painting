@@ -191,7 +191,8 @@ exports.getOwnerIdByImageId = async(imageId) => {
                 }
             }
         ) 
-        return ownerId?ownerId:{'failed' : {
+        console.log(ownerId)
+        return ownerId?ownerId.userId:{'failed' : {
             'message' : 'Failed get owner id'
         }}
     } catch (error) {

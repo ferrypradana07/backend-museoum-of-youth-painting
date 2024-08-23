@@ -1,10 +1,11 @@
 const {login, signup, updateUserData, updatePassword, validationUsername, validationEmail} = require('../service/userService')
-const {signToken} = require('../middleware/jwtMiddleware')
 const {passwordValidation} = require('../utill/password')
 const {getCountryById} = require('../service/countryService')
 const { numberValidator } = require('../utill/type')
 const {validEmail} = require('../utill/email')
 const {createNotificationData} = require('../service/notificationService')
+const {createURL} = require('../utill/location')
+const {signToken} = require('../utill/token')
 
 exports.authorization = async (req, res) => {
     try {
@@ -18,7 +19,9 @@ exports.authorization = async (req, res) => {
             })
         }
         const result = await login(email, password)
+        if(req.session.login == true){
 
+        }
         if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {
@@ -41,8 +44,8 @@ exports.authorization = async (req, res) => {
     }
 }
 
-exports.register = async (req, res) => {
-    try { 
+exports.emailValidation = async (req, res, next) => {
+    try {
         const {username, email, password} = req.body??'';
         res.set('Content-Type', 'application/json')
         if (!username || !email || !password) {
@@ -88,28 +91,62 @@ exports.register = async (req, res) => {
             })
             
         }
-        const result = await signup(username, email, password)
+        const JWT = await signToken(username, email, password, '15m')
+        const verifyURL = createURL(`api/verify-email/?token=${JWT}`);
         
-        if (result.failed || result.error) {
+        req.mailObject = {
+            to : email,
+            subject : 'email verification',
+            text :  `Link : ${verifyURL} Note token expired in 15m and dont share this link to anyone`
+        }        
+        req.responOption = {
+            'error' : {
+                'message':'something going wrong'
+            },
+            'success' : {
+                'message':'verification email has been sended'
+            }
+        }
+        return next()
+    } catch (error) {
+        console.error('Error while validating email for registering request middleware ', error)
+        res.status(500).json({
+            'error' : {
+                'message' : 'something going error'
+            }
+        })
+    }
+}
+
+exports.register = async (req, res) => {
+    try { 
+        const {username, email, password} = req.decoded??'';
+        res.set('Content-Type', 'application/json')
+        if (!username || !email || !password) {
             return res.status(400).json({
                 'error' : {
-                    'message' : result.failed?result.failed.message:result.error.message
+                    'message' : 'username, email and password are required'
                 }
             })
         }
-        const {id} = result
-        const token = await signToken(id, 'user', username)
-        res.status(201).json(
-            {   
-                'message' : 'user registered succesfully',
-                'token' : token, 
-                'user' : {
-                    'id' : result.id,
-                    'username' : result.username
+        const user = await signup(username, email, password)
+        if (user.failed || !user.error) {
+            return res.status(500).json({
+                'error' : {
+                    'message' : 'something going error'
                 }
-            }
-        )
-        await createNotificationData(id,'<title>welcome to museoum of paint</title>','<title>welcome to museoum of paint</title>')
+            })
+        }
+        const token = await signToken(user.id, user.username, 'user', '72h')
+        res.status(200).json({
+            'token' : token,
+            'user' : {
+                'id' : user.id,
+                'username' : user.username
+            },
+            'message' : 'user registerd succesfully'
+        })
+        await createNotificationData(user.id, 'welcome to museoum web', 'welcome to museoum web')
     } catch (error) {
         console.error('Error while registering user in userController',error)
         return res.status(500).json({
@@ -120,47 +157,11 @@ exports.register = async (req, res) => {
     }
 }
 
-// exports.getUserData = async (req, res, next) => {
-//     try {
-//         const {userId} = req.params??'';
-//         if (!userId) {
-//             return res.status(400).json({
-//                 'error' : {
-//                     'message' : 'userId is required'
-//                 }
-//             })
-//         }
-//         const result = await users.findOne({
-//             where : {
-//                 id : userId,
-//                 status : 'active'
-//             },
-//             attributes : ['username', 'photo_profile', 'description', 'country']
-//         })
-//         if (!result) {
-//             return res.status(404).json({
-//                 'message' : 'Not Found',
-//                 'user' : {}
-//             })
-//         }
-//         req.user = result
-//         // res.status(200).json({'user' : result})
-//         return next()
-//     } catch (error) {
-//         console.error('Error while getting users in userController',error)
-//         return res.status(500).json({
-//             'error' : {
-//                 'message':'something going wrong'
-//             }
-//         })
-//     }
-// }
-
 exports.updateUserData = async (req, res) => { 
     try {
         const {newUsername, description, countryId} = req.body??'';
         const {id} = req.decoded
-        const isNumberType = await numberValidator(country)
+        const isNumberType = countryId? await numberValidator(countryId):false
         if (isNumberType) {
             return res.status(400).json({
                 'error' : {
@@ -168,7 +169,7 @@ exports.updateUserData = async (req, res) => {
                 }
             })
         }
-        const isValidId = await getCountryById(countryId)
+        const isValidId = countryId? await getCountryById(countryId):false
         if (isValidId) {
             return res.status(400).json({
                 'error' : {
@@ -176,25 +177,28 @@ exports.updateUserData = async (req, res) => {
                 }
             })
         }
-        const isValidUsername = await validationUsername(newUsername)
+        const isValidUsername = newUsername? await validationUsername(newUsername):false
         if (isValidUsername) {
             return res.status(400).json({
                 'error' : {
                     'message' : `username is unavailable`
                 }
             })
-            
         }
         const updatedUser = await updateUserData(id, newUsername, description, countryId)
         res.set('Content-Type', 'application/json')
-        if (!updatedUser || updatedUser.error) {
+        if (updatedUser.failed || updatedUser.error) {
             return res.status(404).json({
-                'message' : 'Not Found',
-                'user' : {}
+                'error' : {
+                    'message' : 'something going wrong'
+                }
             })
         }
         res.status(200).json({
-            'message' : 'success update user'
+            'message' : 'success update user',
+            'user' : {
+                    'username':newUsername,
+                }
         })
     } catch (error) {
         console.error('Error while updating user in userController',error)

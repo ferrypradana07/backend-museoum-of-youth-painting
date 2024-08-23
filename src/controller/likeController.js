@@ -7,14 +7,15 @@ exports.createLike = async (req, res) => {
         const {imageId} = req.params??''
         const {id} = req.decoded
         const ownerId = await getOwnerIdByImageId(imageId)
-        if (!ownerId) {
+        console.log(ownerId + 'Owner Id')
+        if (!ownerId || ownerId.failed) {
             return res.status(400).json({
                 'error' : {
                     'message' : 'imageId is invalid'
                 }
             })
         }
-        const result = await createLikeData(id, ownerId.id, imageId)
+        const result = await createLikeData(id, ownerId, imageId)
         if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {

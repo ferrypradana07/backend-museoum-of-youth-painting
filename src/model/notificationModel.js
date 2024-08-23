@@ -15,7 +15,8 @@ const notification = sequelize.define('notifications', {
         references:{
             model : users,
             key: 'id'
-        }
+        },
+        onDelete : 'CASCADE'
     },
     title : {
         type : DataTypes.STRING,

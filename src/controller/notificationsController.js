@@ -2,7 +2,8 @@ const {getNotificationsData} = require('../service/notificationService')
 
 exports.getNotifications = async (req, res) => {
     try {
-        const {userId} = req.params??''
+        const {limit, offset} = req.query??''
+        const order = req.query.order?req.query.order:'ASC'
         res.set('Content-Type', 'application/json')
         const {id} = req.decoded??''
         if (!userId || userId != id) {
@@ -12,7 +13,7 @@ exports.getNotifications = async (req, res) => {
                 }
             })
         }
-        const result = await getNotificationsData(userId)
+        const result = await getNotificationsData(userId, offset, order, limit)
         if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {

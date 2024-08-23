@@ -15,7 +15,8 @@ const collections = sequelize.define('collections', {
         referance : {
             model : users,
             key : 'id'
-        }
+        },
+        onDelete : 'CASCADE'
     }, 
     imageId : {
         type : DataTypes.UUID,
@@ -23,7 +24,8 @@ const collections = sequelize.define('collections', {
         referance : {
             model : images,
             key : 'id'
-        }
+        },
+        onDelete : 'CASCADE'
     }, 
 }, {
     indexes : [

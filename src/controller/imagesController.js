@@ -51,21 +51,6 @@ exports.getImages = async (req, res) => {
         const {limit, offset} = req.query??'';
         const order = req.query.order?req.query.order: 'ASC' 
         res.set('Content-Type', 'application/json')
-        if (!limit || !offset) {
-            return res.status(400).json({
-                'error' : {
-                    'message' : 'limit and offset are require'
-                }
-            })
-        }
-        const validType = await numberValidator(offset) && await numberValidator(limit)
-        if (!validType) {
-            return res.status(400).json({
-                'error' : {
-                    'message' : 'offset or limit query type are invalid'
-                }
-            })
-        }
         const newOffset = await convertToNumberType(offset)
         const newLimit = await convertToNumberType(limit)
         const result = await getImagesData(newOffset, order, newLimit)
@@ -93,25 +78,10 @@ exports.getImagesByTitle = async (req, res) => {
     try {
         const {limit, offset, title} = req.query??'';
         const order = req.query.order?req.query.order: 'ASC' 
-        res.set('Content-Type', 'application/json')
-        if (!limit || !offset) {
-            return res.status(400).json({
-                'error' : {
-                    'message' : 'limit and offset are require'
-                }
-            })
-        }
-        const validType = await numberValidator(offset) && await numberValidator(limit)
-        if (!validType) {
-            return res.status(400).json({
-                'error' : {
-                    'message' : 'offset or limit query type are invalid'
-                }
-            })
-        }
         const newOffset = await convertToNumberType(offset)
         const newLimit = await convertToNumberType(limit)
         const result = await getImagesDataByTitle(title, newOffset, order, newLimit)
+        res.set('Content-Type', 'application/json')
         if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {

@@ -104,7 +104,9 @@ exports.updateUserData = async (id, username, description, country) => {
             id : id,
         }) 
         if (!user) {
-            return {}
+            return {'failed' : {
+                'message' : 'User not found'
+            }}
         };
         username && user.username? user.update({username : username}) : '';
         description && user.description? user.update({description : description}) : '';

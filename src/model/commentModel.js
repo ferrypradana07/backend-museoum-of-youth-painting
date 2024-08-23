@@ -4,7 +4,7 @@ const {v4: uuidv4} = require('uuid')
 const { images } = require('./imageModel')
 const { users } = require('./userModel')
 
-const comments = sequelize.define('admins', {
+const comments = sequelize.define('comments', {
     id : {
         type : DataTypes.UUID,
         defaultValue : uuidv4(),
@@ -16,7 +16,8 @@ const comments = sequelize.define('admins', {
         references : {
             model : images,
             key : 'id'
-        }
+        },
+        onDelete : 'CASCADE'
     }, 
     userId : {
         type : DataTypes.UUID,
@@ -24,7 +25,8 @@ const comments = sequelize.define('admins', {
         references : {
             model : users,
             key : 'id'
-        }
+        },
+        onDelete : 'CASCADE'
     }, 
     text : {
         type : DataTypes.STRING,

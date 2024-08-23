@@ -59,8 +59,10 @@ exports.headerContentTypeMultipartFormData = async (req, res, next) => {
         })
     }
 }
+
 exports.headerContentTypeXURLEncoded = async (req, res, next) => {
     try {
+        console.log('Content-Type Middleware')
         const contentTypeHeader = req.headers['content-type']??''
         console.log(contentTypeHeader)
         if (!contentTypeHeader) {

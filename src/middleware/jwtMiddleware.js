@@ -1,21 +1,5 @@
 const jwt = require('jsonwebtoken');
 const { SECRET, WEB_DOMAIN } = require('../config/config');
-const {createURL} = require('../utill/location')
-
-
-exports.signToken = async (id, role, username) => {
-    try {
-        if (!id || !role || !username) {
-           return 'invalid'
-        }
-        const user = {id, role, username}
-        const token = jwt.sign(user, SECRET, {expiresIn : '240h'})
-        return token
-    } catch (error) {
-        console.error('Error while creating token in middleware', error)
-        return 'error'
-    }
-}
 
 exports.verifyToken = async (req, res, next) => {
     const authHeader = req.headers['authorization']??'';
@@ -29,12 +13,50 @@ exports.verifyToken = async (req, res, next) => {
     try {
         jwt.verify(token, SECRET, (err, decoded) => {
             console.log(decoded)
-            console.log('=========dec0de')
             if (err) {
                 console.log(err)
                 return
             }
-            if (!decoded.id || !decoded.role || !decoded.username) {
+            return req.decoded = decoded 
+        })
+    } catch (error) {
+        return res.status(400).json({
+            'error' : {
+                'message' : 'token is invalid'
+            }
+        })
+    }
+    if (!req.decoded) {
+        return res.status(400).json({
+            'error' : {
+                'message' : 'token is invalid'
+            }
+        })
+    }
+    return res.status(200).json({
+        'success' : {
+            'message' : 'token is valid'
+        }
+    })
+}
+
+exports.verifyUserToken = async (req, res, next) => {
+    const authHeader = req.headers['authorization']??'';
+    if (!authHeader) {
+        return res.status(300).json({
+            'message' : 'Header Authorization is required'
+        })
+    }
+    const token = authHeader.split(' ')[1];
+    console.log(token)
+    try {
+        jwt.verify(token, SECRET, (err, decoded) => {
+            console.log(decoded)
+            if (err) {
+                console.log(err)
+                return
+            }
+            if (!decoded.id || !decoded.role || !decoded.username || decoded.role != 'user') {
                 console.log(err)
                 return
             }
@@ -57,7 +79,7 @@ exports.verifyToken = async (req, res, next) => {
     return next()
 }
 
-exports.verifyTokenAdmin = async (req, res, next) => {
+exports.verifyAdminToken = async (req, res, next) => {
     const authHeader = req.headers['authorization']??'';
     if (!authHeader) {
         return res.status(300).json({
@@ -72,7 +94,43 @@ exports.verifyTokenAdmin = async (req, res, next) => {
                 console.log(err)
                 return
             }
-            if (!decoded.id || !decoded.role || !decoded.username || decoded !== 'admin') {
+            if (!decoded.id || !decoded.role || !decoded.username || decoded.role != 'admin') {
+                console.log(err)
+                return
+            }
+            return req.decoded = decoded 
+        })
+    } catch (error) {
+        return res.status(400).json({
+            'error' : {
+                'message' : 'token is invalid'
+            }
+        })
+    }
+    if (!req.decoded) {
+        return res.status(400).json({
+            'error' : {
+                'message' : 'token is invalid'
+            }
+        })
+    }
+    return next()
+}
+
+exports.verifyRegisterToken = async (req, res, next) => {
+    const {token} = req.query??'';
+    if (!token) {
+        return res.status(300).json({
+            'message' : 'token query is required'
+        })
+    }
+    try {
+        jwt.verify(token, SECRET, (err, decoded) => {
+            if (err) {
+                console.log(err)
+                return
+            }
+            if (!decoded.username || !decoded.email || !decoded.password) {
                 console.log(err)
                 return
             }
@@ -141,8 +199,16 @@ exports.signTokenUpdatePass = async (req, res, next) => {
                 }
             }) 
         }
+        req.responOption = {
+            'error' : {
+                'message':'something going wrong'
+            },
+            'success' : {
+                'message':'verification token email has been sended'
+            }
+        }
         const token = jwt.sign(email, SECRET, {expiresIn : '15m'})
-        const URL = await createURL(`changepassword?token=${token}`)
+        const URL = await createURL(`auth/change-password?token=${token}`)
         req.mailObject = {
             'to' : email,
             'subject': `${WEB_DOMAIN} password reset`,

@@ -4,9 +4,12 @@ const { SALT_ROUND } = require('../config/config')
 const router = express.Router()
 const {verifyToken} = require('../middleware/jwtMiddleware')
 
-router.get('/', verifyToken, (req, res) => {
-    res.send({id:req.decoded.id})
+router.get('/', (req, res) => {
+    req.session.login = true,
+    req.session.username = 'ferrypradana',
+    res.send({id:req.decoded?req.decoded.id:'id', 'session' : req.session})
 })
+
 router.post('/:query1/:query2', (req, res) => {
     console.log('=====' + 'Params' +'=====')
     console.log(req.params.query1 + req.params.query2)
@@ -26,6 +29,13 @@ router.post('/:query1/:query2', (req, res) => {
 })
 
 router.post('/', (req, res) => {
+    console.log('=====' + 'SESSION' +'=====')
+    console.log(req.session)
+    console.log('=====' + 'SESSION 1' +'=====')
+    console.log(req.sessionID)
+    console.log('=====' + 'SESSION 2' +'=====')
+    console.log(req.sessionStore)
+    req.session.login = true
     console.log('=====' + 'Headers' +'=====')
     console.log(req.headers['content-type'])
     console.log('=====' + 'CT 1' +'=====')
@@ -33,7 +43,8 @@ router.post('/', (req, res) => {
     console.log('=====' + 'CT 2' +'=====')
     console.log('Body : ' + req.body)
     res.status(200).json({
-        'header' : req.headers
+        'header' : req.headers,
+        'session' : req.session
     })
 })
 

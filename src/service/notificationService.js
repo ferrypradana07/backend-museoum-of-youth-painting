@@ -36,14 +36,15 @@ exports.createNotificationBulkData = async (arrayInput) =>{
     }
 }
 
-exports.getNotificationsData = async (userId, limit) =>{
+exports.getNotificationsData = async (userId, offset, order, limit) =>{
     try {
         const result = await notification.findAll({
             where : {
                 userId : userId
             },
             attributes : ['title', 'message'],
-            order : ['createAt', 'DESC'],
+            order : [['createdAt', order]],
+            offset : offset,
             limit : limit
         })
         if (result) {

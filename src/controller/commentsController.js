@@ -1,33 +1,17 @@
 const { getCommentsData } = require('../service/commentsService')
-const {convertToNumberType, numberValidator} = require('../utill/type')
+const {convertToNumberType} = require('../utill/type')
 
 exports.getComments = async (req, res) => {
     try {
-        const {offset, limit} = req.query??''
         const {imageId} = req.params??''
-        if (!offset || !limit || !imageId) {
+        const {offset, limit} = req.query??''
+        if (!imageId) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'offset, limit and imageId is require'
+                    'message' : 'imageId is required'
                 }
             })
         }  
-       
-        const validType = await numberValidator(offset) && await numberValidator(limit)
-        if (!validType) {
-            return res.status(400).json({
-                'error' : {
-                    'message' : 'offset or limit query type are invalid'
-                }
-            })
-        }
-        if (limit > 10) {
-            return res.status(400).json({
-                'error' : {
-                    'message' : 'max limit is 10'
-                }
-            })
-        }
         const newOffset = await convertToNumberType(offset)
         const newLimit = await convertToNumberType(limit)
         const order = 'ASC'

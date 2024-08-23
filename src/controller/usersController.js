@@ -1,10 +1,9 @@
 const {getUsers} = require('../service/userService')
 const {convertToNumberType} = require('../utill/type')
-const {numberValidator} = require('../utill/type')
 
 exports.getUsers = async (req, res) => {
     try {
-        const {page, limit} = req.query??'';
+        const {offset, limit} = req.query??'';
         if (!page || !page) {
             return res.status(400).json({
                 'error' : {
@@ -13,15 +12,6 @@ exports.getUsers = async (req, res) => {
             })
         }
         const order = 'ASC'
-        const validType = await numberValidator(page) && await numberValidator(limit)
-        if (!validType) {
-            return res.status(400).json({
-                'error' : {
-                    'message' : 'offset or limit query type are invalid'
-                }
-            })
-        }
-        const offset = page * 15
         const newOffset = await convertToNumberType(offset)
         const newLimit = await convertToNumberType(limit)
         const result = await getUsers(newOffset, order, newLimit)

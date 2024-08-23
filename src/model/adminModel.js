@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize')
 const {sequelize} = require('../config/config')
 const {v4: uuidv4} = require('uuid')
-const { fields } = require('../middleware/multerMiddleware')
 
 const admins = sequelize.define('admins', {
     id : {

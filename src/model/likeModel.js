@@ -15,7 +15,8 @@ const likes = sequelize.define('likes', {
         references:{
             model : users,
             key: 'id'
-        }
+        },
+        onDelete : 'CASCADE'
     },
     postId : {
         type : DataTypes.UUID,
@@ -23,7 +24,8 @@ const likes = sequelize.define('likes', {
         references:{
             model : users,
             key: 'id'
-        }
+        },
+        onDelete : 'CASCADE'
     },
     imageId : {
         type : DataTypes.UUID,
@@ -31,7 +33,8 @@ const likes = sequelize.define('likes', {
         references : {
             model : images,
             key : 'id'
-        }
+        },
+        onDelete : 'CASCADE'
     }
 }, {
     indexes : [

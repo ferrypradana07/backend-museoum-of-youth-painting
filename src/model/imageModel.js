@@ -15,7 +15,8 @@ const images = sequelize.define('images', {
         references:{
             model : users,
             key: 'id'
-        }
+        },
+        onDelete : 'CASCADE'
     },
     URL : {
         type : DataTypes.STRING,

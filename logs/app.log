@@ -7,3 +7,55 @@
 ::1 - - [21/Aug/2024:15:05:18 +0000] "GET /api/collections/5f21c223-9347-4c93-9dc9-e8cf5295aa1d?offset=0&limit=2 HTTP/1.1" 200 253 "-" "PostmanRuntime/7.37.3":INFO:2024-08-21T15:05:18.324Z
 ::1 - - [21/Aug/2024:15:05:22 +0000] "GET /api/collections/5f21c223-9347-4c93-9dc9-e8cf5295aa1d?offset=0&limit=2 HTTP/1.1" 200 253 "-" "PostmanRuntime/7.37.3":INFO:2024-08-21T15:05:22.136Z
 ::1 - - [21/Aug/2024:15:05:23 +0000] "GET /api/collections/5f21c223-9347-4c93-9dc9-e8cf5295aa1d?offset=0&limit=2 HTTP/1.1" 200 253 "-" "PostmanRuntime/7.37.3":INFO:2024-08-21T15:05:23.721Z
+::1 - - [22/Aug/2024:10:54:33 +0000] "GET /api/collections/5f21c223-9347-4c93-9dc9-e8cf5295aa1d?offset=0&limit=2 HTTP/1.1" 200 18 "-" "PostmanRuntime/7.37.3":INFO:2024-08-22T10:54:33.622Z
+::1 - - [22/Aug/2024:11:24:55 +0000] "GET /dev HTTP/1.1" 200 45 "-" "PostmanRuntime/7.37.3":INFO:2024-08-22T11:24:55.626Z
+::1 - - [22/Aug/2024:11:25:00 +0000] "GET /dev HTTP/1.1" 200 45 "-" "PostmanRuntime/7.37.3":INFO:2024-08-22T11:25:00.979Z
+::1 - - [22/Aug/2024:11:25:06 +0000] "GET /dev HTTP/1.1" 200 45 "-" "PostmanRuntime/7.37.3":INFO:2024-08-22T11:25:06.516Z
+::1 - - [22/Aug/2024:11:25:30 +0000] "POST /dev HTTP/1.1" 200 643 "-" "PostmanRuntime/7.37.3":INFO:2024-08-22T11:25:30.874Z
+::1 - - [22/Aug/2024:11:29:01 +0000] "POST /dev HTTP/1.1" 200 643 "-" "PostmanRuntime/7.37.3":INFO:2024-08-22T11:29:01.607Z
+::1 - - [22/Aug/2024:11:29:35 +0000] "POST /dev HTTP/1.1" 200 645 "-" "PostmanRuntime/7.37.3":INFO:2024-08-22T11:29:35.454Z
+::1 - - [22/Aug/2024:13:09:56 +0000] "POST /dev HTTP/1.1" 200 645 "-" "PostmanRuntime/7.37.3":INFO:2024-08-22T13:09:56.179Z
+::1 - - [22/Aug/2024:13:10:13 +0000] "POST /dev HTTP/1.1" 200 643 "-" "PostmanRuntime/7.37.3":INFO:2024-08-22T13:10:13.516Z
+::1 - - [22/Aug/2024:13:10:44 +0000] "POST /dev HTTP/1.1" 200 641 "-" "PostmanRuntime/7.37.3":INFO:2024-08-22T13:10:44.629Z
+::1 - - [22/Aug/2024:13:11:08 +0000] "POST /dev HTTP/1.1" 200 641 "-" "PostmanRuntime/7.37.3":INFO:2024-08-22T13:11:08.437Z
+::1 - - [22/Aug/2024:13:15:53 +0000] "GET /dev HTTP/1.1" 300 46 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36":INFO:2024-08-22T13:15:53.932Z
+::1 - - [22/Aug/2024:13:15:58 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36":INFO:2024-08-22T13:15:58.255Z
+::1 - - [22/Aug/2024:13:21:17 +0000] "GET /dev HTTP/1.1" 500 1644 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36":INFO:2024-08-22T13:21:17.098Z
+::1 - - [22/Aug/2024:13:22:18 +0000] "GET /dev HTTP/1.1" 200 140 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36":INFO:2024-08-22T13:22:18.986Z
+::1 - - [22/Aug/2024:13:22:26 +0000] "GET /dev HTTP/1.1" 200 140 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36":INFO:2024-08-22T13:22:26.304Z
+::1 - - [22/Aug/2024:13:22:27 +0000] "GET /dev HTTP/1.1" 200 140 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36":INFO:2024-08-22T13:22:27.982Z
+::1 - - [22/Aug/2024:13:23:15 +0000] "GET /dev HTTP/1.1" 200 179 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36":INFO:2024-08-22T13:23:15.199Z
+::1 - - [22/Aug/2024:13:23:22 +0000] "GET /dev HTTP/1.1" 200 179 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36":INFO:2024-08-22T13:23:22.048Z
+::1 - - [22/Aug/2024:13:24:05 +0000] "GET /dev HTTP/1.1" 200 179 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36":INFO:2024-08-22T13:24:05.934Z
+::ffff:127.0.0.1 - - [22/Aug/2024:15:18:36 +0000] "POST /auth/register HTTP/1.1" 400 54 "-" "PostmanRuntime/7.37.3":INFO:2024-08-22T15:18:36.233Z
+Error message : Unexpected token u in JSON at position 0:ERROR:2024-08-22T15:19:15.378Z
+::1 - - [23/Aug/2024:00:25:14 +0000] "POST /auth/register HTTP/1.1" 400 65 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:25:14.181Z
+Error message : Unexpected token u in JSON at position 0:ERROR:2024-08-23T00:25:34.785Z
+Error message : Unexpected token u in JSON at position 0:ERROR:2024-08-23T00:25:42.398Z
+::1 - - [23/Aug/2024:00:30:09 +0000] "POST /auth/register HTTP/1.1" 400 65 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:30:09.639Z
+::1 - - [23/Aug/2024:00:31:44 +0000] "POST /auth/register HTTP/1.1" 400 65 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:31:44.407Z
+::1 - - [23/Aug/2024:00:31:52 +0000] "POST /auth/register HTTP/1.1" 400 55 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:31:52.467Z
+Error message : Unexpected token u in JSON at position 0:ERROR:2024-08-23T00:32:25.937Z
+::1 - - [23/Aug/2024:00:35:15 +0000] "POST /auth/register HTTP/1.1" 400 65 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:35:15.051Z
+::1 - - [23/Aug/2024:00:35:29 +0000] "POST /auth/register HTTP/1.1" 404 119 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:35:29.260Z
+::1 - - [23/Aug/2024:00:35:41 +0000] "POST /auth/register HTTP/1.1" 404 117 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:35:41.171Z
+::1 - - [23/Aug/2024:00:35:54 +0000] "POST /auth/register HTTP/1.1" 400 40 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:35:54.572Z
+::1 - - [23/Aug/2024:00:36:04 +0000] "POST /auth/register HTTP/1.1" 400 40 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:36:04.705Z
+::1 - - [23/Aug/2024:00:37:08 +0000] "POST /auth/register HTTP/1.1" 400 45 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:37:08.764Z
+::1 - - [23/Aug/2024:00:38:22 +0000] "POST /auth/register HTTP/1.1" 201 362 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:38:22.297Z
+::1 - - [23/Aug/2024:00:39:38 +0000] "POST /auth/register HTTP/1.1" 400 47 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:39:38.939Z
+::1 - - [23/Aug/2024:00:43:40 +0000] "POST /api/image/upload HTTP/1.1" 500 1479 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:43:40.099Z
+::1 - - [23/Aug/2024:00:45:14 +0000] "POST /api/image/upload HTTP/1.1" 500 45 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:45:14.329Z
+::1 - - [23/Aug/2024:00:50:55 +0000] "POST /api/image/upload HTTP/1.1" 400 46 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:50:55.368Z
+::1 - - [23/Aug/2024:00:53:46 +0000] "POST /api/image/upload HTTP/1.1" 201 39 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:53:46.192Z
+::1 - - [23/Aug/2024:00:54:20 +0000] "POST /api/47c72574-5c17-4b39-bbf1-b9f803a3971f HTTP/1.1" 404 180 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:54:20.145Z
+::1 - - [23/Aug/2024:00:54:35 +0000] "POST /api/like/47c72574-5c17-4b39-bbf1-b9f803a3971f HTTP/1.1" 400 45 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:54:35.633Z
+::1 - - [23/Aug/2024:00:58:02 +0000] "POST /api/like/47c72574-5c17-4b39-bbf1-b9f803a3971f HTTP/1.1" 400 42 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T00:58:02.049Z
+::1 - - [23/Aug/2024:06:20:15 +0000] "POST /api/like/47c72574-5c17-4b39-bbf1-b9f803a3971f HTTP/1.1" 400 42 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T06:20:15.159Z
+Error message : Unexpected token u in JSON at position 0:ERROR:2024-08-23T06:21:13.375Z
+::1 - - [23/Aug/2024:06:21:33 +0000] "POST /auth/register HTTP/1.1" 400 40 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T06:21:33.755Z
+::1 - - [23/Aug/2024:06:23:03 +0000] "POST /auth/register HTTP/1.1" 400 45 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T06:23:03.571Z
+::1 - - [23/Aug/2024:06:23:50 +0000] "POST /auth/register HTTP/1.1" 201 362 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T06:23:50.232Z
+::1 - - [23/Aug/2024:06:24:40 +0000] "POST /auth/register HTTP/1.1" 400 47 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T06:24:40.990Z
+::1 - - [23/Aug/2024:11:18:28 +0000] "POST /auth/register HTTP/1.1" 400 45 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T11:18:28.447Z
+::1 - - [23/Aug/2024:11:18:35 +0000] "POST /auth/register HTTP/1.1" 201 364 "-" "PostmanRuntime/7.37.3":INFO:2024-08-23T11:18:35.926Z

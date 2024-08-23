@@ -28,12 +28,27 @@ exports.sendMail = async (req, res, next) => {
             subject : mailObject.subject,
             text : mailObject.text
         } 
+        const response = req.responOption??{}
         try {
             let info = await transporter.sendMail(mailOption)
             console.log(info.response)
+            if (response.success) {
+                return res.status(200).json({
+                    'success'  : {
+                        'message' : response.success.message
+                    }
+                })
+            }
             return next()
         } catch (error) {
-            console.log(error)
+            console.error('Error while sending mail in mail middleware ', error)
+            if (response.error) {
+                return res.status(200).json({
+                    'error'  : {
+                        'message' : response.error.message
+                    }
+                })
+            }
         }
     }
 }

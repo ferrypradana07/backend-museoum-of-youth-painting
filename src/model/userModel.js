@@ -41,10 +41,6 @@ const users = sequelize.define('users', {
     type : DataTypes.ENUM,
     values : ['active', 'pending', 'deleted'],
     defaultValue : 'active'
-  },
-  createAt : {
-    type : DataTypes.DATE,
-    defaultValue : DataTypes.NOW
   }
 }, {
   indexes : [

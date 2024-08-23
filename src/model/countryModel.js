@@ -10,10 +10,7 @@ const countrys = sequelize.define('countrys', {
     country:{
         type : DataTypes.STRING,
         allowNull : false
-    },
-    createAt : {
-        type : DataTypes.DATE,
-        defaultValue : DataTypes.NOW
-}})
+    }
+})
 
 module.exports = { countrys } 

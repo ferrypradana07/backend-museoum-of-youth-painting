@@ -15,7 +15,8 @@ const followers = sequelize.define('followers', {
         references:{
             model : users,
             key: 'id'
-        }
+        },
+        onDelete : 'CASCADE'
     },
     postId : {
         type : DataTypes.UUID,
@@ -23,7 +24,8 @@ const followers = sequelize.define('followers', {
         references:{
             model : users,
             key: 'id'
-        }
+        },
+        onDelete : 'CASCADE'
     },
 }, {
     indexes : [

@@ -1,10 +1,10 @@
 const express = require('express')
 
-const {verifyToken} = require('../middleware/jwtMiddleware')
+const {verifyUserToken} = require('../middleware/jwtMiddleware')
 const followerController = require('../controller/followerController')
 const router = express.Router()
 
-router.post('/:userId', verifyToken, followerController.createfollower)
-router.delete('/:userId', verifyToken, followerController.deletefollower)
+router.post('/:userId', verifyUserToken, followerController.createfollower)
+router.delete('/:userId', verifyUserToken, followerController.deletefollower)
 
 module.exports = router
