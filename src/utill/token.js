@@ -1,15 +1,15 @@
 const jwt = require('jsonwebtoken')
+const { SECRET } = require('../config/config')
 
-exports.signToken = async (property1, property2, property3, expired) => {
+exports.signToken = async (obj, expired) => {
     try {
-        if (!property1 || !property2 || !property3 || !expired) {
+        if (!obj || !expired) {
            return 'invalid'
         }
-        const obj = {property1, property2, property3}
         const token = jwt.sign(obj, SECRET, {expiresIn : expired})
         return token
     } catch (error) {
-        console.error('Error while creating token in middleware', error)
+        console.error('Error while creating token in utill', error)
         return 'error'
     }
 }

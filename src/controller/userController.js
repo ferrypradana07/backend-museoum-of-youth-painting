@@ -1,4 +1,4 @@
-const {login, signup, updateUserData, updatePassword, validationUsername, validationEmail} = require('../service/userService')
+const {login, signup, updateUserData, updatePassword, validationUsername, validationEmail, deleteUser, deleteUserData} = require('../service/userService')
 const {passwordValidation} = require('../utill/password')
 const {getCountryById} = require('../service/countryService')
 const { numberValidator } = require('../utill/type')
@@ -91,9 +91,19 @@ exports.emailValidation = async (req, res, next) => {
             })
             
         }
-        const JWT = await signToken(username, email, password, '15m')
-        const verifyURL = createURL(`api/verify-email/?token=${JWT}`);
-        
+        const obj = {
+            'username' : username,
+            'email' : email,
+            'password' : password,
+        }
+        console.log(obj)
+        const JWT = await signToken(obj, '15m')
+        // const verifyURL = await createURL(`auth/email-validation/?token=${JWT}`);
+        const verifyURL = await createURL(`auth/register/?token=${JWT}`);
+        return res.status(200).json({
+            email,
+            verifyURL
+        })
         req.mailObject = {
             to : email,
             subject : 'email verification',
@@ -130,14 +140,19 @@ exports.register = async (req, res) => {
             })
         }
         const user = await signup(username, email, password)
-        if (user.failed || !user.error) {
+        if (user.failed || user.error) {
             return res.status(500).json({
                 'error' : {
                     'message' : 'something going error'
                 }
             })
         }
-        const token = await signToken(user.id, user.username, 'user', '72h')
+        const obj = {
+            id : user.id,
+            username : user.username,
+            role : 'user'
+        }
+        const token = await signToken(obj, '72h')
         res.status(200).json({
             'token' : token,
             'user' : {
@@ -157,20 +172,22 @@ exports.register = async (req, res) => {
     }
 }
 
-exports.updateUserData = async (req, res) => { 
+exports.updateUser = async (req, res) => { 
     try {
         const {newUsername, description, countryId} = req.body??'';
         const {id} = req.decoded
         const isNumberType = countryId? await numberValidator(countryId):false
-        if (isNumberType) {
+        const URL = req.imageIdentifier? await createURL(`/cdn/${image}`):''
+        res.set('Content-Type', 'application/json')
+        if (isNumberType === false) {
             return res.status(400).json({
                 'error' : {
                     'message' : `countryId type is invalid`
                 }
             })
         }
-        const isValidId = countryId? await getCountryById(countryId):false
-        if (isValidId) {
+        const country = countryId? await getCountryById(countryId):false
+        if (country.failed || country.error) {
             return res.status(400).json({
                 'error' : {
                     'message' : `countryId is invalid`
@@ -178,15 +195,14 @@ exports.updateUserData = async (req, res) => {
             })
         }
         const isValidUsername = newUsername? await validationUsername(newUsername):false
-        if (isValidUsername) {
+        if (isValidUsername === false) {
             return res.status(400).json({
                 'error' : {
                     'message' : `username is unavailable`
                 }
             })
         }
-        const updatedUser = await updateUserData(id, newUsername, description, countryId)
-        res.set('Content-Type', 'application/json')
+        const updatedUser = await updateUserData(id, newUsername, URL, description, countryId)
         if (updatedUser.failed || updatedUser.error) {
             return res.status(404).json({
                 'error' : {
@@ -241,6 +257,48 @@ exports.updateUserPassword = async (req, res) => {
         return res.status(500).json({
             'error' : {
                 'message':'something going wrong'
+            }
+        })
+    }
+}
+
+
+exports.deleteUser = async (req, res) => {
+    try {
+        const {userId} = req.params??'';
+        const {id} = req.decoded;
+        res.set('Content-Type', 'application/json')
+        if (!userId) {
+            return res.status(400).json({
+                'error' : {
+                    'message' : 'image id and userId is require'
+                }
+            })
+        } 
+        if (userId !== id) {
+            return res.status(400).json({
+                'error' : {
+                    'message' : 'userId is invalid'
+                }
+            })
+        } 
+        const message = await deleteUserData(id)
+        
+        if (message.failed || message.error) {
+            return res.status(500).json({
+                'error' : {
+                    'message' : message.error?message.error.message:message.failed.message
+                }
+            })
+        }
+        return res.status(201).json({
+            'message' : message.success.message
+        })
+    } catch (error) {
+        console.error('Error while deleting image in controller',error)
+        return res.status(400).json({
+            'error' : {
+                'message' : 'something going wrong'
             }
         })
     }

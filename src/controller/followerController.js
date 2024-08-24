@@ -4,6 +4,8 @@ exports.createfollower = async(req, res) => {
     try {
         const {userId} = req.params??'';
         const {id} = req.decoded??'';
+        res.set('Content-Type', 'application/json')
+
         if (!userId) {
             return res.status(400).json({
                 'error' : {
@@ -36,6 +38,8 @@ exports.deletefollower = async(req, res) => {
     try {
         const {userId} = req.params??''
         const {id} = req.decoded??''
+        res.set('Content-Type', 'application/json')
+
         if (!userId) {
             return res.status(400).json({
                 'error' : {

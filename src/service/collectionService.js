@@ -1,7 +1,19 @@
+const { where } = require('sequelize')
 const {collections} = require('../model/collectionModel')
 
 exports.createCollectionData = async (userId, imageId) =>{
     try {
+        const validation = await collections.findOne({
+            where : {
+                userId,
+                imageId:imageId
+            }
+        })
+        if (validation) {
+            return {'failed' : {
+                'message' : 'user has been collected image'
+            }}
+        }
         const result = await collections.create({
             userId : userId,
             imageId : imageId
@@ -15,7 +27,7 @@ exports.createCollectionData = async (userId, imageId) =>{
             'message' : 'Failed create collection data'
         }}
     } catch (error) {
-        console.error('Error while create collection data in service',error)
+        console.error('Error while create collection data in collection service',error)
       return {'error' : {
                 'message' : 'Something going wrong'
             }}
@@ -39,7 +51,7 @@ exports.deleteCollectionData = async (userId, imageId) =>{
             'message' : 'Failed deleting collection data'
         }}
     } catch (error) {
-        console.error('Error while delete collection data in service',error)
+        console.error('Error while delete collection data in collection service',error)
       return {'error' : {
                 'message' : 'Something going wrong'
             }}
@@ -62,7 +74,7 @@ exports.getUserCollectionsData = async (userId, offset, order, limit) =>{
         }
         return []
     } catch (error) {
-        console.error('Error while get user collection data in service',error)
+        console.error('Error while get user collection data in collection service',error)
       return {'error' : {
                 'message' : 'Something going wrong'
             }}

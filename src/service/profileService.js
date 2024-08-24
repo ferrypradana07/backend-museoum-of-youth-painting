@@ -4,16 +4,15 @@ const {followers} = require('../model/followerModel')
 const {images} = require('../model/imageModel')
 const {likes} = require('../model/likeModel')
 const {getCountryById} = require('./countryService')
+const { where } = require('sequelize')
 
 exports.getProfileData = async (userId, authId) => {
     try {
-        console.log(userId)
-        console.log(authId)
         const userData = await users.findOne({
             where : {
                 id : userId
             },
-            attributes : ['username', 'photo_profile', 'description', 'country']
+            attributes : ['id', 'username', 'photo_profile', 'description', 'country']
         })
         if (!userData) {
             return  {'failed' : {
@@ -27,16 +26,26 @@ exports.getProfileData = async (userId, authId) => {
             where : {
                 id : userId
             },
-            limit : 3
+            limit : 3,
+            attributes : ['id', 'imageId']
         })
     
         const imageData = await images.findAll({
             where : {
                 id : userId
             },
-            limit : 3
+            limit : 3,
+            attributes : ['id', 'imageId', 'URL', 'title', 'description']
         })
-        
+        const imagesCollection = await Promise.all(collectionData.map(async(index) => {
+            const image = await images.findOne({
+                where : {
+                    imageId : index.imageId
+                },
+                attributes : ['id', 'imageId', 'URL', 'title', 'description']
+            })
+            return image?image:''
+        }))
         const likeData = await likes.count({
             where : {
                 id : userId
@@ -56,14 +65,14 @@ exports.getProfileData = async (userId, authId) => {
         })
     
         if (userData) {
-            result = {...userData.user, 'collections' : collectionData, 'images' : imageData, like : likeData, follower: followerData}
+            result = {...userData.user, 'collections' : imagesCollection, 'images' : imageData, like : likeData, follower: followerData}
             return {'user' : result, 'isfollow' : hasFollowed?true:false}
         }
         return {'failed' : {
             'message' : 'failed getting user profile'
         }}
     } catch (error) {
-        console.error('Error while getprofiledata in service', error)
+        console.error('Error while getprofiledata in profile service', error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}

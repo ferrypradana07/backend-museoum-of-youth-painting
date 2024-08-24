@@ -7,5 +7,5 @@ const router = express.Router()
 
 router.post('/:imageId', verifyUserToken, likeController.createLike)
 router.delete('/:imageId', verifyUserToken, likeController.deleteLike)
-
+// 
 module.exports = router

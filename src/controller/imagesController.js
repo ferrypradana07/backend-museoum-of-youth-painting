@@ -65,7 +65,7 @@ exports.getImages = async (req, res) => {
             ...result
         })
     } catch (error) {
-        console.error('error while getting image in controller', error)
+        console.error('error while getting many image in controller', error)
         res.status(500).json({
             'error' : {
                 'message' : 'something going wrong'

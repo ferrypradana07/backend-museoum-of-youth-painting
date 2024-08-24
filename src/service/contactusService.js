@@ -17,7 +17,7 @@ exports.createContacUsFormData = async (username, email, subject, message) =>{
             'message' : 'Failed create form data'
         }}
     } catch (error) {
-        console.error('Error while create form data in service',error)
+        console.error('Error while create form data in contactus service',error)
         return {'error' : {
                 'message' : 'Something going wrong'
             }}
@@ -38,7 +38,7 @@ exports.getContacUsFormData = async (offset, order, limit) =>{
             'message' : 'Failed get form data'
         }}
     } catch (error) {
-        console.error('Error while getting form data in service',error)
+        console.error('Error while getting form data in contactus service',error)
       return {'error' : {
                 'message' : 'Something going wrong'
             }}

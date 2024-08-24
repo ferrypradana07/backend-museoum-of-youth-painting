@@ -1,4 +1,4 @@
-const {createLikeData} = require('../service/likeService')
+const {createLikeData, deleteLikeData} = require('../service/likeService')
 const {getOwnerIdByImageId} = require('../service/imageService')
 const {createNotificationData} = require('../service/notificationService')
 
@@ -7,6 +7,7 @@ exports.createLike = async (req, res) => {
         const {imageId} = req.params??''
         const {id} = req.decoded
         const ownerId = await getOwnerIdByImageId(imageId)
+        res.set('Content-Type', 'application/json')
         console.log(ownerId + 'Owner Id')
         if (!ownerId || ownerId.failed) {
             return res.status(400).json({
@@ -48,7 +49,8 @@ exports.deleteLike = async (req, res) => {
     try {
         const {imageId} = req.params??''
         const {id} = req.decoded
-        const ownerId = await getOwnerIdBYimageId(imageId)
+        const ownerId = await getOwnerIdByImageId(imageId)
+        res.set('Content-Type', 'application/json')
         if (!ownerId) {
             return res.status(400).json({
                 'error' : {
@@ -56,7 +58,7 @@ exports.deleteLike = async (req, res) => {
                 }
             })
         }
-        const result = await createLikeData(id, ownerId, imageId)
+        const result = await deleteLikeData(id, imageId) 
         if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {

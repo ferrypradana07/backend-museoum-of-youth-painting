@@ -23,7 +23,7 @@ exports.createCommentData = async (imageId, userId, comment) => {
             }
         }
     } catch (error) {
-        console.error('Error while create comment in service', error)
+        console.error('Error while create comment in comment service', error)
         return { 
             'error' : {
                 'message' : 'something going error'
@@ -53,7 +53,7 @@ exports.deleteCommentData = async (commentId, imageId, userId) => {
             }
         }
     } catch (error) {
-        console.error('Error while delete comment in service', error)
+        console.error('Error while delete comment in comment service', error)
         return { 
             'error' : {
                 'message' : 'something going error'
@@ -108,7 +108,7 @@ exports.getCommentsData = async (imageId, offset, order, limit) => {
             }
         }
     } catch (error) {
-        console.error('Error while delete comment in service', error)
+        console.error('Error while delete comment in comment service', error)
         return { 
             'error' : {
                 'message' : 'something going error'
@@ -143,7 +143,7 @@ exports.getUsernameAndIdByUserId = async(arrayId) => {
         ) 
         return username?username:{'failed' : 'not found'}
     } catch (error) {
-        console.error('Error while getting username in service',error)
+        console.error('Error while getting username in comment service',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}

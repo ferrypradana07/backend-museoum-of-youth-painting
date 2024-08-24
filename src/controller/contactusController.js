@@ -6,6 +6,8 @@ exports.getContactUsForm = async(req, res) => {
     try {
         const {userId} = req.params??'';
         const {offset, limit} = req.query??'';
+        res.set('Content-Type', 'application/json')
+
         if (!userId) {
             return res.status(400).json({
                 'error' : {
@@ -40,7 +42,7 @@ exports.getContactUsForm = async(req, res) => {
 exports.createContactUsForm = async(req, res) => {
     try {
         const {username, email, subject, message} = req.body??''
-        console.log(req)
+        res.set('Content-Type', 'application/json')
         if (!username || !email || !subject || !message) {
             return res.status(400).json({
                 'error' : {

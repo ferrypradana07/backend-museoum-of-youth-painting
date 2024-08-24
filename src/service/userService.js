@@ -1,4 +1,4 @@
-const { Op, where } = require('sequelize')
+ 
 const {users} = require('../model/userModel')
 const bcrypt = require('bcrypt')
 
@@ -23,7 +23,7 @@ exports.login = async (email, password) => {
             'message' : 'password is not match'
         }}
     } catch (error) {
-        console.error('Error while user login in service',error)
+        console.error('Error while user login in user service',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
@@ -45,28 +45,30 @@ exports.signup = async (username, email, password) => {
             'message' : 'failed create account'
         }}
     } catch (error) {
-        console.error('Error while signup in service',error)
+        console.error('Error while signup in user service',error)
         return {'error' : {
             'message' : 'something going error'
         }}
     }
 }
 
-exports.deleteUser = async (userId) => {
+exports.deleteUserData = async (userId) => {
     try {
         const result = await users.destroy({
            where : {
             id : userId
-           }
+           } 
         }) 
         if (result) {
-            return {'success' : 'success'}
+            return {'success' : {
+                'message' : 'user deleted succesfully'
+            }}
         }
         return {'failed' : {
             'message' : 'Failed delete user account'
         }}
     } catch (error) {
-        console.error('Error while deleting user in service',error)
+        console.error('Error while deleting userdata in user service',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
@@ -76,7 +78,9 @@ exports.deleteUser = async (userId) => {
 exports.updatePassword = async (email, password) => {
     try {
         const result = await users.findOne({
-            email : email
+            where : {
+                email : email
+            }
         }) 
         if (!result) {
             return {}
@@ -91,51 +95,69 @@ exports.updatePassword = async (email, password) => {
         await result.save()
         return {'success' : 'success'}
     } catch (error) {
-        console.error('Error while updatePassword in service',error)
+        console.error('Error while updatePassword in user service',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
     }
 }
 
-exports.updateUserData = async (id, username, description, country) => {
+exports.updateUserData = async (id, username, URL, description, country) => {
     try {
         const user = await users.findOne({
-            id : id,
+            where : {
+                id : id,
+            }
         }) 
         if (!user) {
             return {'failed' : {
                 'message' : 'User not found'
             }}
         };
-        username && user.username? user.update({username : username}) : '';
-        description && user.description? user.update({description : description}) : '';
-        country && user.country? user.update({country : country}) : '';
+        console.log('id, username,URL, description, country')
+        console.log(id, username,URL, description, country)
+        username ? user.update({username : username}) : '';
+        URL ? user.update({URL : URL}) : '';
+        description ? user.update({description : description}) : '';
+        country ? user.update({country : country}) : '';
         user.save()
         return user
     } catch (error) {
-        console.error('Error while update user data in service',error)
+        console.error('Error while update user data in user service',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
     }
 }
 
-exports.getUsers = async (offset, order, limit) => {
+exports.getUsersData = async (offset, order, limit) => {
     try {
         const usersData = await users.findAll({
-            attributes : ['username', 'photo_profile'],
+            attributes : ['id', 'username', 'photo_profile'],
             offset : offset,
             order: [['createdAt', order]],
-            limit:limit,
+            limit:limit+1,
         }) 
-        if (!usersData || usersData.length == 0) {
-            return {}
-        };
-        
-        return usersData
+        if (usersData.length > 0) {
+            if (usersData.length <= limit) {
+                return {
+                    'users' : usersData,
+                    'isLast' : false
+                }
+            } else {
+                return {
+                    'users' : usersData,
+                    'isLast' : true
+                }
+            } 
+        }
+        return {
+            'failed' : {
+                'message' : 'users not found'
+            }
+        }
     } catch (error) {
-        console.error('Error while getting user data in service',error)
+        console.error('Error while getting user data in user service',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
@@ -160,7 +182,7 @@ exports.userValidation = async (username, email, password) => {
         }
         return {}
     } catch (error) {
-        console.error('Error while validation user in service',error)
+        console.error('Error while validation user in user service',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
@@ -178,7 +200,7 @@ exports.getUsernameByUserId = async(userId) => {
         ) 
         return username?username:{'failed' : 'not found'}
     } catch (error) {
-        console.error('Error while getting username in service',error)
+        console.error('Error while getting username in user service',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
@@ -198,9 +220,7 @@ exports.validationUsername = async(username) => {
         return valid? false : true
     } catch (error) {
         console.error('Error while validating username ',error)
-        return {'error' : {
-            'message' : 'Something going wrong'
-        }}
+        return false
     }
 }
 
@@ -215,7 +235,7 @@ exports.validationEmail = async(email) => {
         ) 
         return valid? false : true
     } catch (error) {
-        console.error('Error while validating email in service ',error)
+        console.error('Error while validating email in user service ',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}

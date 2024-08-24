@@ -14,7 +14,7 @@ exports.createNotificationData = async (userId, title, message) =>{
             'message' : 'Failed bulk create notification'
         }}
     } catch (error) {
-        console.error('Error while create collection data in service',error)
+        console.error('Error while create collection data in notification service',error)
         return {'error' : 'somthing going wrong'}
     }
 }
@@ -31,14 +31,14 @@ exports.createNotificationBulkData = async (arrayInput) =>{
             'message' : 'Failed create notification'
         }}
     } catch (error) {
-        console.error('Error while create notification bulk data in service',error)
+        console.error('Error while create notification bulk data in notification service',error)
         return {'error' : 'something going wrong'}
     }
 }
 
 exports.getNotificationsData = async (userId, offset, order, limit) =>{
     try {
-        const result = await notification.findAll({
+        const notifications = await notification.findAll({
             where : {
                 userId : userId
             },
@@ -47,14 +47,24 @@ exports.getNotificationsData = async (userId, offset, order, limit) =>{
             offset : offset,
             limit : limit
         })
-        if (result) {
-            return {'notifications' : result}
+        if (notifications.length > 0) {
+            if (notifications.length <= limit) {
+                return {
+                    'users' : notifications,
+                    'isLast' : false
+                }
+            } else {
+                return {
+                    'users' : notifications,
+                    'isLast' : true
+                }
+            } 
         }
         return  {'failed' : {
             'message' : 'Not found'
         }}
     } catch (error) {
-        console.error('Error while getting notification data in service',error)
+        console.error('Error while getting notifications data in notification service',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}

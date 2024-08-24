@@ -1,4 +1,5 @@
 const {getNotificationsData} = require('../service/notificationService')
+const {convertToNumberType} = require('../utill/type')
 
 exports.getNotifications = async (req, res) => {
     try {
@@ -6,14 +7,9 @@ exports.getNotifications = async (req, res) => {
         const order = req.query.order?req.query.order:'ASC'
         res.set('Content-Type', 'application/json')
         const {id} = req.decoded??''
-        if (!userId || userId != id) {
-            return res.status(400).json({
-                'error' : {
-                    'message' : 'userId is require'
-                }
-            })
-        }
-        const result = await getNotificationsData(userId, offset, order, limit)
+        const newOffset = await convertToNumberType(offset)
+        const newLimit = await convertToNumberType(limit)
+        const result = await getNotificationsData(id, newOffset, order, newLimit)
         if (result.failed || result.error) {
             return res.status(400).json({
                 'error' : {

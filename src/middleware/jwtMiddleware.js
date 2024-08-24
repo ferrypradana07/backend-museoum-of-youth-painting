@@ -131,6 +131,7 @@ exports.verifyRegisterToken = async (req, res, next) => {
                 return
             }
             if (!decoded.username || !decoded.email || !decoded.password) {
+                console.log(decoded)
                 console.log(err)
                 return
             }

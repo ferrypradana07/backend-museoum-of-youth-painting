@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.get('/:identifier', (req, res) => {
     const { identifier }= req.params
-    const imagesLocation = path.join(__dirname, '..', 'uploads', identifier)
+    const imagesLocation = path.join(__dirname, '..', 'images', identifier)
     if (fs.existsSync(imagesLocation)) {
         res.sendFile(imagesLocation)
     } else {
@@ -17,5 +17,5 @@ router.get('/:identifier', (req, res) => {
         })
     }
 })
-// 
+
 module.exports = router

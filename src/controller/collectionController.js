@@ -5,6 +5,7 @@ exports.createCollection = async(req, res) => {
     try {
         const {imageId} = req.params??'';
         const {id} = req.decoded??'';
+        res.set('Content-Type', 'application/json')
         if (!imageId) {
             return res.status(400).json({
                 'error' : {
@@ -37,6 +38,7 @@ exports.deleteCollection = async(req, res) => {
     try {
         const {imageId} = req.params??''
         const {id} = req.decoded??''
+        res.set('Content-Type', 'application/json')
         if (!imageId) {
             return res.status(400).json({
                 'error' : {

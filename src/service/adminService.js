@@ -1,12 +1,12 @@
 const {admins} = require('../model/adminModel')
 
-exports.login = async (email, password) => {
+exports.login = async (username, password) => {
     try {
         const result = await admins.findOne({
             where : {
-                email : email, 
+                username : username, 
             },
-            attributes : ['id', 'password']
+            attributes : ['id', 'username', 'password']
         }) 
         if (!result) {
             return {'failed' : {
@@ -21,7 +21,7 @@ exports.login = async (email, password) => {
             'message' : 'password is not match'
         }}
     } catch (error) {
-        console.error('Error while admin login in service',error)
+        console.error('Error while admin login in admin service',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}

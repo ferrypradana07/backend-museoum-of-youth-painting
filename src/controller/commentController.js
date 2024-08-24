@@ -5,6 +5,7 @@ exports.createComment = async (req, res) => {
         const {text} = req.body??''
         const {imageId} = req.params??''
         const {id} = req.decoded.id
+        res.set('Content-Type', 'application/json')
         if (!imageId || !text) {
             return res.status(400).json({
                 'error' : {
@@ -41,6 +42,7 @@ exports.deleteComment = async (req, res) => {
     try {
         const {imageId} = req.params??''
         const {id} = req.decoded.id
+        res.set('Content-Type', 'application/json')
         if (!imageId || !text) {
             return res.status(400).json({
                 'error' : {

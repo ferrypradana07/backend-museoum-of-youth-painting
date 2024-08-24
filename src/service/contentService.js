@@ -35,7 +35,7 @@ exports.getImageDetailData = async (imageId, userId) => {
             'isLiked' : isLiked?true:false
         }
     } catch (error) {
-        console.error('Error while getting content data in service',error)
+        console.error('Error while getting content data in content service',error)
         return {'error' : {
                 'message' : 'Something going wrong'
             }}

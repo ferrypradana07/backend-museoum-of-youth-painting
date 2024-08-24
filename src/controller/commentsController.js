@@ -5,6 +5,7 @@ exports.getComments = async (req, res) => {
     try {
         const {imageId} = req.params??''
         const {offset, limit} = req.query??''
+        res.set('Content-Type', 'application/json')
         if (!imageId) {
             return res.status(400).json({
                 'error' : {

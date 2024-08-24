@@ -8,6 +8,7 @@ exports.getUserCollection = async(req, res) => {
     try {
         const {userId} = req.params??'';
         const {offset, limit} = req.query??'';
+        res.set('Content-Type', 'application/json')
         if (!userId) {
             return res.status(400).json({
                 'error' : {

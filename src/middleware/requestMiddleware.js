@@ -1,7 +1,4 @@
 const {numberValidator} = require('../utill/type')
-const {validationUsername, validationEmail} = require('../service/userService')
-const {createURL} = require('../utill/location')
-const {passwordValidation} = require('../utill/password')
 
 exports.imageValidation = async (req, res) => {
     try {
@@ -38,10 +35,43 @@ exports.imageValidation = async (req, res) => {
     }
 }
 
+exports.photoProfileValidation = async (req, res) => {
+    try {
+        const {title, description} = req.body??''
+        if (!title || !description) {
+            return res.status(400).json({
+                'error' : {
+                    'message' : 'title and description is require'
+                }
+            })
+        }
+        if (title.length > 100) {
+            return res.status(400).json({
+                'error' : {
+                    'message' : 'title length is too long'
+                }
+            })
+        }
+        if (description.length > 500) {
+            return res.status(400).json({
+                'error' : {
+                    'message' : 'description length is too long'
+                }
+            })
+        }
+        return next()
+    } catch (error) {
+        console.error('Error while validating upload image request validation middleware ', error)
+        res.status(500).json({
+            'error' : {
+                'message' : 'something going error'
+            }
+        })
+    }
+}
 
 
-
-exports.gettingManyDatasValidation = async (req, res) => {
+exports.gettingManyDatasValidation = async (req, res, next) => {
     try {
         const {offset, limit} = req.query??''
         if (!offset || !limit) {
@@ -68,7 +98,7 @@ exports.gettingManyDatasValidation = async (req, res) => {
         }
         return next()
     } catch (error) {
-        console.error('Error while validating upload image request validation middleware ', error)
+        console.error('Error while validating request manydatas middleware ', error)
         res.status(500).json({
             'error' : {
                 'message' : 'something going error'

@@ -1,4 +1,4 @@
-const {createImageData, deleteImageData, getImagesData, getUserImagesData, getImageData} = require('../service/imageService')
+const {createImageData, deleteImageData, getImagesData, getUserImagesData, getImageData, getOwnerIdByImageId} = require('../service/imageService')
 const {createURL} = require('../utill/location')
 const {createArrayNotifObject} = require('../utill/notification')
 const {createNotificationBulkData} = require('../service/notificationService')
@@ -59,13 +59,21 @@ exports.deleteImage = async (req, res) => {
         const {imageId} = req.params??'';
         const {id} = req.decoded;
         res.set('Content-Type', 'application/json')
-        if (!imageId || !userId) {
+        if (!imageId) {
             return res.status(400).json({
                 'error' : {
-                    'message' : 'image id and userId is require'
+                    'message' : 'imageId is require'
                 }
             })
         } 
+        const ownerId = await getOwnerIdByImageId(imageId)
+        if (ownerId !== id) {
+            return res.status(400).json({
+                'error' : {
+                    'message' : 'imageId is invalid'
+                }
+            })
+        }
         const message = await deleteImageData(imageId, id)
         
         if (message.failed || message.error) {
@@ -87,19 +95,6 @@ exports.deleteImage = async (req, res) => {
         })
     } catch (error) {
         console.error('Error while deleting image in controller',error)
-        return res.status(400).json({
-            'error' : {
-                'message' : 'something going wrong'
-            }
-        })
-    }
-}
-
-exports.getOwnerIdBYimageId = async() => {
-    try {
-        
-    } catch (error) {
-        console.error('Error while deleting image ',error)
         return res.status(400).json({
             'error' : {
                 'message' : 'something going wrong'

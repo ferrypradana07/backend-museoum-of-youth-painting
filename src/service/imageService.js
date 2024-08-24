@@ -17,7 +17,7 @@ exports.createImageData = async (userId, URL, title, description) => {
             'message' : 'Failed create image data'
         }}
     } catch (error) {
-        console.error('Error while create image data in service',error)
+        console.error('Error while create image data in image service',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
@@ -26,7 +26,7 @@ exports.createImageData = async (userId, URL, title, description) => {
 
 exports.deleteImageData = async (imageId, userId) => {
     try {
-        const image = await images.delete({
+        const image = await images.destroy({
             where : {
                 id : imageId,
                 userId : userId
@@ -41,7 +41,7 @@ exports.deleteImageData = async (imageId, userId) => {
             'message' : 'Failed delete image data'
         }}
     } catch (error) {
-        console.error('Error while delete image data in service',error)
+        console.error('Error while delete image data in image service',error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
@@ -72,7 +72,7 @@ exports.getURLimageByImageId = async (array) => {
         }
         return result
     } catch (error) {
-        console.error('Error while get URL images data in service ', error)
+        console.error('Error while get URL images data in image service ', error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
@@ -107,7 +107,7 @@ exports.getUserImagesData = async (userId, offset, order, limit) => {
             'message' : 'image data not found'
         }}
     } catch (error) {
-        console.error('error while get user image service', error)
+        console.error('error while get user image image service', error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
@@ -142,7 +142,7 @@ exports.getImagesDataByTitle = async (title) => {
             'message' : 'image data not found'
         }}
     } catch (error) {
-        console.error('error while get image data by title in service', error)
+        console.error('error while get image data by title in image service', error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
@@ -154,10 +154,10 @@ exports.getImagesData = async (offset, order, limit) => {
         const result = await images.findAll({
             offset : offset,
             limit: limit,
-            order : [['createdAt', 'ASC']],
+            order : [['createdAt', order]],
             attributes : ['id', 'URL', 'title', 'description']
         })
-        if (result) {
+        if (result.length > 0) {
             if (result.length <= limit) {
                 return {
                     'islast' : true,
@@ -175,7 +175,7 @@ exports.getImagesData = async (offset, order, limit) => {
             'message' : 'Failed get images data'
         }}
     } catch (error) {
-        console.error('error while get images service', error)
+        console.error('error while get images image service', error)
         return {'error' : {
             'message' : 'Something going wrong'
         }}
